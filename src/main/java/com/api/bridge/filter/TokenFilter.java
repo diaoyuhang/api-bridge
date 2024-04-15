@@ -4,10 +4,8 @@ import com.api.bridge.utils.ReqThreadInfoUtil;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-@Component
 public class TokenFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -18,7 +16,7 @@ public class TokenFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         try {
             HttpServletRequest request = (HttpServletRequest) servletRequest;
-            String token = request.getHeader("Authentication");
+            String token = request.getHeader("token");
             if (StringUtils.isBlank(token)){
                 throw new RuntimeException("获取身份失败");
             }
@@ -27,7 +25,7 @@ public class TokenFilter implements Filter {
             // 要继续处理请求，必须添加 filterChain.doFilter()
             filterChain.doFilter(servletRequest,servletResponse);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw e;
         }finally {
             ReqThreadInfoUtil.removeToken();
         }
