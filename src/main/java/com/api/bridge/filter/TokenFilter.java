@@ -1,26 +1,38 @@
 package com.api.bridge.filter;
 
+import com.api.bridge.constant.BaseConstant;
 import com.api.bridge.utils.ReqThreadInfoUtil;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 public class TokenFilter implements Filter {
+
+    private Set<String> excludedPaths;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        Filter.super.init(filterConfig);
+        String paths = filterConfig.getInitParameter("excludedPaths");
+         excludedPaths = new HashSet<>(Arrays.asList(paths.split(BaseConstant.COMMA_SEPARATOR)));
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        String requestURI = request.getRequestURI();
         try {
-            HttpServletRequest request = (HttpServletRequest) servletRequest;
             String token = request.getHeader("token");
-            if (StringUtils.isBlank(token)){
-                throw new RuntimeException("获取身份失败");
+            if (!excludedPaths.contains(requestURI)) {
+                if (StringUtils.isBlank(token)) {
+                    throw new RuntimeException("获取身份失败");
+                }
             }
-            String requestURI = request.getRequestURI();
+
             ReqThreadInfoUtil.setToken(token);
             // 要继续处理请求，必须添加 filterChain.doFilter()
             filterChain.doFilter(servletRequest,servletResponse);

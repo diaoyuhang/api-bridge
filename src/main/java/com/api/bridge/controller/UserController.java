@@ -24,7 +24,7 @@ public class UserController {
     public ResultDto<UserResDto> register(@RequestBody UserReqDto userReqDto) throws Exception {
         User user = userService.register(userReqDto.convertUser());
         UserResDto userResDto = UserResDto.create(user);
-        userResDto.setAuthentication(SecretUtil.decrypt(JSONObject.toJSONString(user)));
+        userResDto.setAuthentication(SecretUtil.encrypt(JSONObject.toJSONString(user)));
         return ResultDto.createSuccess(userResDto);
     }
 }

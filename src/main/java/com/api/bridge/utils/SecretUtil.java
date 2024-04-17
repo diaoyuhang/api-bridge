@@ -28,8 +28,4 @@ public class SecretUtil {
         return new String(decryptedBytes);
     }
 
-    public static User decryptUserInfo(String token) throws Exception {
-        return JSONObject.parseObject(decrypt(token),User.class);
-    }
-
 }

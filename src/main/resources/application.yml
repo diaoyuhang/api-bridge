@@ -2,7 +2,7 @@ spring:
   application:
     name: api-bridge
   datasource:
-    url: jdbc:mysql://192.168.80.100:3306/api_bridge?useSSL=false&autoReconnect=true&characterEncoding=utf8
+    url: jdbc:mysql://192.168.80.100:3306/api_bridge?useSSL=false&autoReconnect=true&characterEncoding=utf8&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456
