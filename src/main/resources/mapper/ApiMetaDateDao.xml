@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.bridge.dao.ApiMetaDateDao">
+  <resultMap id="BaseResultMap" type="com.api.bridge.dao.domain.ApiMetaDate">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="tag_id" jdbcType="VARCHAR" property="tagId" />
+    <result column="meta_date" jdbcType="VARCHAR" property="metaDate" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="edit_time" jdbcType="TIMESTAMP" property="editTime" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="editor" jdbcType="VARCHAR" property="editor" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, tag_id, meta_date, create_time, edit_time, creator, editor
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from api_meta_date
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from api_meta_date
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.ApiMetaDate" useGeneratedKeys="true">
+    insert into api_meta_date (tag_id, meta_date, create_time, 
+      edit_time, creator, editor
+      )
+    values (#{tagId,jdbcType=VARCHAR}, #{metaDate,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{editTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{editor,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.ApiMetaDate" useGeneratedKeys="true">
+    insert into api_meta_date
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tagId != null">
+        tag_id,
+      </if>
+      <if test="metaDate != null">
+        meta_date,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="editTime != null">
+        edit_time,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="editor != null">
+        editor,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tagId != null">
+        #{tagId,jdbcType=VARCHAR},
+      </if>
+      <if test="metaDate != null">
+        #{metaDate,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editTime != null">
+        #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="editor != null">
+        #{editor,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.api.bridge.dao.domain.ApiMetaDate">
+    update api_meta_date
+    <set>
+      <if test="tagId != null">
+        tag_id = #{tagId,jdbcType=VARCHAR},
+      </if>
+      <if test="metaDate != null">
+        meta_date = #{metaDate,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editTime != null">
+        edit_time = #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="editor != null">
+        editor = #{editor,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.api.bridge.dao.domain.ApiMetaDate">
+    update api_meta_date
+    set tag_id = #{tagId,jdbcType=VARCHAR},
+      meta_date = #{metaDate,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      edit_time = #{editTime,jdbcType=TIMESTAMP},
+      creator = #{creator,jdbcType=VARCHAR},
+      editor = #{editor,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
