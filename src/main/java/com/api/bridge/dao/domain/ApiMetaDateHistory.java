@@ -1,19 +1,22 @@
 package com.api.bridge.dao.domain;
 
-import org.springframework.beans.BeanUtils;
-
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * api_meta_date
+ * api_meta_date_history
  * @author 
  */
-public class ApiMetaDate implements Serializable {
+public class ApiMetaDateHistory implements Serializable {
     /**
-     * 主键
+     * 历史记录主键
      */
     private Long id;
+
+    /**
+     * 接口id|api_meta_date.id
+     */
+    private Long apiId;
 
     /**
      * 组id|tag_group.id
@@ -26,7 +29,7 @@ public class ApiMetaDate implements Serializable {
     private String path;
 
     /**
-     * 请求方法|get post put delete
+     * 请求方法|GET POST PUT DELETE
      */
     private String method;
 
@@ -68,6 +71,14 @@ public class ApiMetaDate implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getApiId() {
+        return apiId;
+    }
+
+    public void setApiId(Long apiId) {
+        this.apiId = apiId;
     }
 
     public String getTagId() {
@@ -140,13 +151,5 @@ public class ApiMetaDate implements Serializable {
 
     public void setEditor(String editor) {
         this.editor = editor;
-    }
-
-    public ApiMetaDateHistory createHistory() {
-        ApiMetaDateHistory apiMetaDateHistory = new ApiMetaDateHistory();
-        BeanUtils.copyProperties(this,apiMetaDateHistory);
-        apiMetaDateHistory.setId(null);
-        apiMetaDateHistory.setApiId(this.id);
-        return apiMetaDateHistory;
     }
 }

@@ -1,6 +1,7 @@
 package com.api.bridge.service.impl;
 
 import com.api.bridge.dao.ApiMetaDateDao;
+import com.api.bridge.dao.ApiMetaDateHistoryDao;
 import com.api.bridge.dao.TagGroupDao;
 import com.api.bridge.dao.domain.ApiMetaDate;
 import com.api.bridge.dao.domain.TagGroup;
@@ -20,6 +21,9 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
     @Autowired
     private ApiMetaDateDao apiMetaDateDao;
 
+    @Autowired
+    private ApiMetaDateHistoryDao apiMetaDateHistoryDao;
+
     @Override
     public void addApiMetaDate(ApiMetaDateReqDto apiMetaDateReqDto) {
         TagGroup tagGroup = apiMetaDateReqDto.createTagGroup();
@@ -33,5 +37,19 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
         }
 
         List<ApiMetaDate> apiMetaDateList = apiMetaDateReqDto.createApiMetaDateList();
+        for (ApiMetaDate apiMetaDate : apiMetaDateList) {
+            ApiMetaDate oldApiMetaDate = apiMetaDateDao.selectByTagIdAndPathAndMethod(apiMetaDate);
+            if (oldApiMetaDate == null){
+                apiMetaDateDao.insert(apiMetaDate);
+                apiMetaDateHistoryDao.insert(apiMetaDate.createHistory());
+            }else{
+                apiMetaDateHistoryDao.insert(oldApiMetaDate.createHistory());
+                oldApiMetaDate.setSummary(apiMetaDate.getSummary());
+                oldApiMetaDate.setMetaDate(apiMetaDate.getMetaDate());
+                UserHelperUtil.fillEditInfo(oldApiMetaDate);
+                apiMetaDateDao.updateByPrimaryKey(oldApiMetaDate);
+            }
+        }
+
     }
 }

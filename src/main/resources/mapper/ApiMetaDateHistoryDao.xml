@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.api.bridge.dao.ApiMetaDateDao">
-  <resultMap id="BaseResultMap" type="com.api.bridge.dao.domain.ApiMetaDate">
+<mapper namespace="com.api.bridge.dao.ApiMetaDateHistoryDao">
+  <resultMap id="BaseResultMap" type="com.api.bridge.dao.domain.ApiMetaDateHistory">
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="api_id" jdbcType="BIGINT" property="apiId" />
     <result column="tag_id" jdbcType="VARCHAR" property="tagId" />
     <result column="path" jdbcType="VARCHAR" property="path" />
     <result column="method" jdbcType="VARCHAR" property="method" />
@@ -14,40 +15,35 @@
     <result column="editor" jdbcType="VARCHAR" property="editor" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, tag_id, `path`, `method`, summary, meta_date, create_time, edit_time, creator, 
-    editor
+    id, api_id, tag_id, `path`, `method`, summary, meta_date, create_time, edit_time, 
+    creator, editor
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from api_meta_date
+    from api_meta_date_history
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <select id="selectByTagIdAndPathAndMethod" parameterType="com.api.bridge.dao.domain.ApiMetaDate"
-          resultType="com.api.bridge.dao.domain.ApiMetaDate">
-    select
-    <include refid="Base_Column_List"/>
-    from api_meta_date
-    where tag_id = #{tagId} and path=#{path} and method = #{method,jdbcType=VARCHAR}
-  </select>
-
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from api_meta_date
+    delete from api_meta_date_history
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.ApiMetaDate" useGeneratedKeys="true">
-    insert into api_meta_date (tag_id, `path`, `method`, 
-      summary, meta_date, create_time, 
-      edit_time, creator, editor
-      )
-    values (#{tagId,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, 
-      #{summary,jdbcType=VARCHAR}, #{metaDate,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{editTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{editor,jdbcType=VARCHAR}
-      )
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.ApiMetaDateHistory" useGeneratedKeys="true">
+    insert into api_meta_date_history (api_id, tag_id, `path`, 
+      `method`, summary, meta_date, 
+      create_time, edit_time, creator, 
+      editor)
+    values (#{apiId,jdbcType=BIGINT}, #{tagId,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
+      #{method,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{metaDate,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{editTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, 
+      #{editor,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.ApiMetaDate" useGeneratedKeys="true">
-    insert into api_meta_date
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.ApiMetaDateHistory" useGeneratedKeys="true">
+    insert into api_meta_date_history
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="apiId != null">
+        api_id,
+      </if>
       <if test="tagId != null">
         tag_id,
       </if>
@@ -77,6 +73,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="apiId != null">
+        #{apiId,jdbcType=BIGINT},
+      </if>
       <if test="tagId != null">
         #{tagId,jdbcType=VARCHAR},
       </if>
@@ -106,9 +105,12 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.api.bridge.dao.domain.ApiMetaDate">
-    update api_meta_date
+  <update id="updateByPrimaryKeySelective" parameterType="com.api.bridge.dao.domain.ApiMetaDateHistory">
+    update api_meta_date_history
     <set>
+      <if test="apiId != null">
+        api_id = #{apiId,jdbcType=BIGINT},
+      </if>
       <if test="tagId != null">
         tag_id = #{tagId,jdbcType=VARCHAR},
       </if>
@@ -139,9 +141,10 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.api.bridge.dao.domain.ApiMetaDate">
-    update api_meta_date
-    set tag_id = #{tagId,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.api.bridge.dao.domain.ApiMetaDateHistory">
+    update api_meta_date_history
+    set api_id = #{apiId,jdbcType=BIGINT},
+      tag_id = #{tagId,jdbcType=VARCHAR},
       `path` = #{path,jdbcType=VARCHAR},
       `method` = #{method,jdbcType=VARCHAR},
       summary = #{summary,jdbcType=VARCHAR},
