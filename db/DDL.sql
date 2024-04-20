@@ -50,6 +50,7 @@ CREATE TABLE api_meta_date
     tag_id      varchar(100) NOT NULL comment '组id|tag_group.id',
     path        varchar(255) not null comment '接口请求路径',
     method      varchar(20)  not null comment '请求方法|GET POST PUT DELETE',
+    git_branch  varchar(100) not null comment 'git分支信息'
     meta_date   MEDIUMTEXT   NOT NULL comment 'api元数据',
     create_time datetime     not null comment '创建时间',
     edit_time   datetime     not null comment '编辑时间',
@@ -57,6 +58,26 @@ CREATE TABLE api_meta_date
     editor      varchar(50)  not null comment '修改人',
     INDEX api_meta_date_uuid (tag_id),
     INDEX api_meta_date_edit_time (edit_time),
+    INDEX api_meta_date_git_branch (git_branch),
     INDEX api_meta_date_path (path)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 comment ='接口信息';
+
+CREATE TABLE api_meta_date_history
+(
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY comment '主键',
+    tag_id      varchar(100) NOT NULL comment '组id|tag_group.id',
+    path        varchar(255) not null comment '接口请求路径',
+    method      varchar(20)  not null comment '请求方法|GET POST PUT DELETE',
+    git_branch  varchar(100) not null comment 'git分支信息'
+    meta_date MEDIUMTEXT NOT NULL comment 'api元数据',
+    create_time datetime     not null comment '创建时间',
+    edit_time   datetime     not null comment '编辑时间',
+    creator     varchar(50)  not null comment '创建人',
+    editor      varchar(50)  not null comment '修改人',
+    INDEX       api_meta_date_uuid (tag_id),
+    INDEX       api_meta_date_edit_time (edit_time),
+    INDEX       api_meta_date_git_branch (git_branch),
+    INDEX       api_meta_date_path ( path)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 comment ='接口信息操作历史';
