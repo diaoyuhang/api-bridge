@@ -34,7 +34,7 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
     private ProjectDao projectDao;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void addApiMetaDate(ApiMetaDateReqDto apiMetaDateReqDto) {
         Long projectId = Long.parseLong(SecretUtil.decrypt(apiMetaDateReqDto.getProjectId()));
         Assert.isTrue(projectDao.selectCountByPrimaryKey(projectId) > 0, String.format("%s  ", apiMetaDateReqDto.getProjectId()));

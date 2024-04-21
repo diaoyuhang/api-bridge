@@ -13,8 +13,8 @@ public class UserHelperUtil {
     private final static Logger logger = LoggerFactory.getLogger(UserHelperUtil.class);
     public static User getUser(){
         try {
-            String encrypt = SecretUtil.encrypt(ReqThreadInfoUtil.getToken());
-            return JSONObject.parseObject(encrypt,User.class);
+            String json = SecretUtil.decrypt(ReqThreadInfoUtil.getToken());
+            return JSONObject.parseObject(json,User.class);
         } catch (Exception e) {
             logger.error("getUser:"+e.getMessage(),e);
             throw new RuntimeException("获取用户信息失败");
@@ -24,8 +24,8 @@ public class UserHelperUtil {
     public static void fillCreateInfo(Object object)  {
         try {
             User user = getUser();
-            Method setCreateTime = object.getClass().getMethod("setCreateTime");
-            Method setCreator = object.getClass().getMethod("setCreator");
+            Method setCreateTime = object.getClass().getDeclaredMethod("setCreateTime");
+            Method setCreator = object.getClass().getDeclaredMethod("setCreator");
 
             setCreateTime.invoke(object,new Date());
             setCreator.invoke(object,user.getEmail());
@@ -38,8 +38,8 @@ public class UserHelperUtil {
     public static void fillEditInfo(Object object)  {
         try {
             User user = getUser();
-            Method setEditTime = object.getClass().getMethod("setEditTime");
-            Method setEditor = object.getClass().getMethod("setEditor");
+            Method setEditTime = object.getClass().getDeclaredMethod("setEditTime");
+            Method setEditor = object.getClass().getDeclaredMethod("setEditor");
 
             setEditTime.invoke(object,new Date());
             setEditor.invoke(object,user.getEmail());

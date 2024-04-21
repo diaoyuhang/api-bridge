@@ -15,7 +15,7 @@ public class FilterRegistrationBeanConfig {
         bean.setName("tokenFilter");
         bean.addUrlPatterns("/*");
         bean.setOrder(1);
-        bean.addInitParameter("excludedPaths","/user/register");//需要排除的uri
+        bean.addInitParameter("excludedPaths","/user/register,/user/login");//需要排除的uri
         return bean;
     }
 }

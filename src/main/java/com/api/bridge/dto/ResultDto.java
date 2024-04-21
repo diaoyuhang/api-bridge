@@ -1,5 +1,7 @@
 package com.api.bridge.dto;
 
+import com.api.bridge.constant.Status;
+
 public class ResultDto<T> {
 
     private String msg;
@@ -7,17 +9,26 @@ public class ResultDto<T> {
 
     private T date;
 
+    private ResultDto(){}
+
     public static <T> ResultDto<T> createSuccess(T date){
         ResultDto<T> resultDto = new ResultDto<>();
-        resultDto.code = 200;
+        resultDto.code = Status.ok.getStatueCode();
         resultDto.date=date;
         return resultDto;
     }
 
-    public static ResultDto<String> createFail(String message) {
+    public static ResultDto<String> createFail(Status s) {
         ResultDto<String> resultDto = new ResultDto<>();
-        resultDto.code = 1000;
-        resultDto.msg = message;
+        resultDto.code = s.getStatueCode();
+        resultDto.msg = s.getMessage();
+        return resultDto;
+    }
+
+    public static ResultDto<String> createFail(Status s,String errorMessage) {
+        ResultDto<String> resultDto = new ResultDto<>();
+        resultDto.code = s.getStatueCode();
+        resultDto.msg = errorMessage;
         return resultDto;
     }
 
