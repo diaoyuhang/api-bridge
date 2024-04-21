@@ -7,7 +7,6 @@ import com.api.bridge.utils.SecretUtil;
 import com.api.bridge.utils.UserHelperUtil;
 import io.micrometer.common.util.StringUtils;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.Paths;
 import jakarta.validation.constraints.NotBlank;
@@ -19,6 +18,11 @@ import java.util.List;
 import java.util.Map;
 
 public class ApiMetaDateReqDto {
+    public static final String GET_METHOD = "get";
+    public static final String DELETE_METHOD = "delete";
+    public static final String PUT_METHOD = "put";
+    public static final String POST_METHOD = "post";
+
     @NotBlank(message = "tagId is empty")
     private String tagId;
     @NotBlank(message = "tagName is empty")
@@ -92,13 +96,13 @@ public class ApiMetaDateReqDto {
                     PathItem value = entry.getValue();
 
                     if (value.getGet() != null) {
-                        apiMetaDate.setMethod("get");
+                        apiMetaDate.setMethod(GET_METHOD);
                     } else if (value.getPost() != null) {
-                        apiMetaDate.setMethod("post");
+                        apiMetaDate.setMethod(POST_METHOD);
                     } else if (value.getPut() != null) {
-                        apiMetaDate.setMethod("put");
+                        apiMetaDate.setMethod(PUT_METHOD);
                     } else if (value.getDelete() != null) {
-                        apiMetaDate.setMethod("delete");
+                        apiMetaDate.setMethod(DELETE_METHOD);
                     }
                     apiMetaDate.setPath(path);
                 }

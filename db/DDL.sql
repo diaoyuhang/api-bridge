@@ -1,7 +1,6 @@
 CREATE DATABASE api_bridge
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_general_ci;
-
 use api_bridge;
 CREATE TABLE user
 (
@@ -13,6 +12,7 @@ CREATE TABLE user
     edit_time   datetime     not null comment '编辑时间',
     creator     varchar(50)  not null comment '创建人',
     editor      varchar(50)  not null comment '修改人',
+    rec_time    timestamp    not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '时间戳',
     UNIQUE INDEX user_email (email)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 comment ='用户';
@@ -26,6 +26,7 @@ CREATE TABLE project
     edit_time   datetime     not null comment '编辑时间',
     creator     varchar(50)  not null comment '创建人',
     editor      varchar(50)  not null comment '修改人',
+    rec_time    timestamp    not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '时间戳',
     INDEX project_edit_time (edit_time)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 comment ='项目';
@@ -39,6 +40,7 @@ CREATE TABLE tag_group
     edit_time   datetime     not null comment '编辑时间',
     creator     varchar(50)  not null comment '创建人',
     editor      varchar(50)  not null comment '修改人',
+    rec_time    timestamp    not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '时间戳',
     INDEX tag_group_project_id (project_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 comment ='接口标签组';
@@ -50,12 +52,13 @@ CREATE TABLE api_meta_date
     tag_id      varchar(100) NOT NULL comment '组id|tag_group.id',
     path        varchar(255) not null comment '接口请求路径',
     method      varchar(20)  not null comment '请求方法|get post put delete',
-    summary     varchar(255) default '' comment '接口名',
+    summary     varchar(255)          default '' comment '接口名',
     meta_date   MEDIUMTEXT   NOT NULL comment 'api元数据',
     create_time datetime     not null comment '创建时间',
-    edit_time datetime default CURRENT_TIMESTAMP not null comment '编辑时间',
+    edit_time   datetime     not null comment '编辑时间',
     creator     varchar(50)  not null comment '创建人',
     editor      varchar(50)  not null comment '修改人',
+    rec_time    timestamp    not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '时间戳',
     INDEX api_meta_date_edit_time (edit_time),
     INDEX api_meta_date_path (path),
     INDEX api_meta_date_summary (summary),
@@ -77,6 +80,7 @@ CREATE TABLE api_meta_date_history
     edit_time   datetime     not null comment '编辑时间',
     creator     varchar(50)  not null comment '创建人',
     editor      varchar(50)  not null comment '修改人',
+    rec_time    timestamp    not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '时间戳',
     INDEX api_meta_date_uuid (tag_id),
     INDEX api_meta_date_edit_time (edit_time)
 ) ENGINE = InnoDB
