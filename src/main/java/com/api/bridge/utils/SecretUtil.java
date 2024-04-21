@@ -1,21 +1,14 @@
 package com.api.bridge.utils;
 
-import com.alibaba.fastjson2.JSONObject;
-import com.api.bridge.dao.domain.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
-
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-import java.util.Date;
 
 public class SecretUtil {
-
+    private final static Logger logger = LoggerFactory.getLogger(SecretUtil.class);
     private static final String ALGORITHM = "AES";
     private static final String SECRET_KEY = "MySecretKey12345";
     public static String encrypt(String data) {
@@ -26,6 +19,7 @@ public class SecretUtil {
             byte[] encryptedBytes = cipher.doFinal(data.getBytes());
             return Base64.getEncoder().encodeToString(encryptedBytes);
         } catch (Exception e) {
+            logger.error("encrypt:"+e.getMessage(),e);
             throw new RuntimeException("加密失败");
         }
     }
@@ -37,6 +31,7 @@ public class SecretUtil {
             byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedData));
             return new String(decryptedBytes);
         } catch (Exception e) {
+            logger.error("decrypt:"+e.getMessage(),e);
             throw new RuntimeException("解密失败！");
         }
     }

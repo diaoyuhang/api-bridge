@@ -14,6 +14,13 @@ public class ResultDto<T> {
         return resultDto;
     }
 
+    public static ResultDto<String> createFail(String message) {
+        ResultDto<String> resultDto = new ResultDto<>();
+        resultDto.code = 1000;
+        resultDto.msg = message;
+        return resultDto;
+    }
+
     public String getMsg() {
         return msg;
     }
