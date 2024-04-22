@@ -5,6 +5,7 @@ import com.api.bridge.dao.ApiMetaDateHistoryDao;
 import com.api.bridge.dao.ProjectDao;
 import com.api.bridge.dao.TagGroupDao;
 import com.api.bridge.dao.domain.ApiMetaDate;
+import com.api.bridge.dao.domain.ApiMetaDateHistory;
 import com.api.bridge.dao.domain.TagGroup;
 import com.api.bridge.dto.api.ApiMetaDateReqDto;
 import com.api.bridge.service.ApiMetaDateService;
@@ -54,13 +55,13 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
             ApiMetaDate oldApiMetaDate = apiMetaDateDao.selectByTagIdAndPathAndMethod(apiMetaDate);
             if (oldApiMetaDate == null) {
                 apiMetaDateDao.insert(apiMetaDate);
-                apiMetaDateHistoryDao.insert(apiMetaDate.createHistory());
+                apiMetaDateHistoryDao.insert(apiMetaDate.createHistory(ApiMetaDateHistory.ADD_OPERATION_TYPE));
             } else {
-                apiMetaDateHistoryDao.insert(oldApiMetaDate.createHistory());
                 oldApiMetaDate.setSummary(apiMetaDate.getSummary());
                 oldApiMetaDate.setMetaDate(apiMetaDate.getMetaDate());
                 UserHelperUtil.fillEditInfo(oldApiMetaDate);
                 apiMetaDateDao.updateByPrimaryKey(oldApiMetaDate);
+                apiMetaDateHistoryDao.insert(oldApiMetaDate.createHistory(ApiMetaDateHistory.UPDATE_OPERATION_TYPE));
             }
         }
 

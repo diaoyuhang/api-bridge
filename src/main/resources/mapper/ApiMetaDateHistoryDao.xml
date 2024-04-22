@@ -9,6 +9,7 @@
     <result column="method" jdbcType="VARCHAR" property="method" />
     <result column="summary" jdbcType="VARCHAR" property="summary" />
     <result column="meta_date" jdbcType="VARCHAR" property="metaDate" />
+    <result column="operation_type" jdbcType="INTEGER" property="operationType" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="edit_time" jdbcType="TIMESTAMP" property="editTime" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
@@ -30,11 +31,11 @@
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.ApiMetaDateHistory" useGeneratedKeys="true">
     insert into api_meta_date_history (api_id, tag_id, `path`, 
-      `method`, summary, meta_date, 
+      `method`, summary, meta_date, operation_type
       create_time, edit_time, creator, 
       editor)
     values (#{apiId,jdbcType=BIGINT}, #{tagId,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
-      #{method,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{metaDate,jdbcType=VARCHAR}, 
+      #{method,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{metaDate,jdbcType=VARCHAR}, #{operationType,jdbcType=INTEGER}
       #{createTime,jdbcType=TIMESTAMP}, #{editTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, 
       #{editor,jdbcType=VARCHAR})
   </insert>
@@ -58,6 +59,9 @@
       </if>
       <if test="metaDate != null">
         meta_date,
+      </if>
+      <if test="operationType != null">
+        operation_type,
       </if>
       <if test="createTime != null">
         create_time,
@@ -90,6 +94,9 @@
       </if>
       <if test="metaDate != null">
         #{metaDate,jdbcType=VARCHAR},
+      </if>
+      <if test="operationType != null">
+        #{operationType,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -126,6 +133,9 @@
       <if test="metaDate != null">
         meta_date = #{metaDate,jdbcType=VARCHAR},
       </if>
+      <if test="operationType != null">
+        operation_type = #{operationType,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -149,6 +159,7 @@
       `method` = #{method,jdbcType=VARCHAR},
       summary = #{summary,jdbcType=VARCHAR},
       meta_date = #{metaDate,jdbcType=VARCHAR},
+      operation_type = #{operationType,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       edit_time = #{editTime,jdbcType=TIMESTAMP},
       creator = #{creator,jdbcType=VARCHAR},

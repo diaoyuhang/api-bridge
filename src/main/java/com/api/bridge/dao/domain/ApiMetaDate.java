@@ -142,11 +142,12 @@ public class ApiMetaDate implements Serializable {
         this.editor = editor;
     }
 
-    public ApiMetaDateHistory createHistory() {
+    public ApiMetaDateHistory createHistory(Integer operationType) {
         ApiMetaDateHistory apiMetaDateHistory = new ApiMetaDateHistory();
         BeanUtils.copyProperties(this,apiMetaDateHistory);
         apiMetaDateHistory.setId(null);
         apiMetaDateHistory.setApiId(this.id);
+        apiMetaDateHistory.setOperationType(operationType);
         return apiMetaDateHistory;
     }
 }

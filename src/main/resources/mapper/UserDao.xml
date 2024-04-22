@@ -6,6 +6,7 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="edit_time" jdbcType="TIMESTAMP" property="editTime" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
@@ -38,10 +39,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.User" useGeneratedKeys="true">
-    insert into user (`name`, email,password, create_time,
+    insert into user (`name`, email,password,status, create_time,
       edit_time, creator, editor
       )
-    values (#{name,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+    values (#{name,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
       #{editTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{editor,jdbcType=VARCHAR}
       )
   </insert>
@@ -49,6 +50,7 @@
     update user
     set `name` = #{name,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
+        password = #{password,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       edit_time = #{editTime,jdbcType=TIMESTAMP},
       creator = #{creator,jdbcType=VARCHAR},

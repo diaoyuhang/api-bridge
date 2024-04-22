@@ -24,8 +24,8 @@ public class UserHelperUtil {
     public static void fillCreateInfo(Object object)  {
         try {
             User user = getUser();
-            Method setCreateTime = object.getClass().getDeclaredMethod("setCreateTime");
-            Method setCreator = object.getClass().getDeclaredMethod("setCreator");
+            Method setCreateTime = object.getClass().getDeclaredMethod("setCreateTime",Date.class);
+            Method setCreator = object.getClass().getDeclaredMethod("setCreator",String.class);
 
             setCreateTime.invoke(object,new Date());
             setCreator.invoke(object,user.getEmail());
@@ -38,8 +38,8 @@ public class UserHelperUtil {
     public static void fillEditInfo(Object object)  {
         try {
             User user = getUser();
-            Method setEditTime = object.getClass().getDeclaredMethod("setEditTime");
-            Method setEditor = object.getClass().getDeclaredMethod("setEditor");
+            Method setEditTime = object.getClass().getDeclaredMethod("setEditTime",Date.class);
+            Method setEditor = object.getClass().getDeclaredMethod("setEditor",String.class);
 
             setEditTime.invoke(object,new Date());
             setEditor.invoke(object,user.getEmail());

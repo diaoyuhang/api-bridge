@@ -9,6 +9,8 @@ public class User {
 
     private String password;
 
+    private Integer status;
+
     private Date createTime;
 
     private Date editTime;
@@ -16,6 +18,14 @@ public class User {
     private String creator;
 
     private String editor;
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     public String getPassword() {
         return password;

@@ -5,9 +5,15 @@ import java.util.Date;
 
 /**
  * api_meta_date_history
- * @author 
+ *
+ * @author
  */
-public class ApiMetaDateHistory implements Serializable {
+public class ApiMetaDateHistory {
+    //1-新增，2-更新，3-删除
+    public static final Integer ADD_OPERATION_TYPE = 1;
+    public static final Integer UPDATE_OPERATION_TYPE = 2;
+    public static final Integer DELETE_OPERATION_TYPE = 3;
+
     /**
      * 历史记录主键
      */
@@ -37,6 +43,10 @@ public class ApiMetaDateHistory implements Serializable {
      * 接口名
      */
     private String summary;
+    /**
+     * 操作类型|1-新增，2-更新，3-删除
+     */
+    private Integer operationType;
 
     /**
      * api元数据
@@ -63,7 +73,13 @@ public class ApiMetaDateHistory implements Serializable {
      */
     private String editor;
 
-    private static final long serialVersionUID = 1L;
+    public Integer getOperationType() {
+        return operationType;
+    }
+
+    public void setOperationType(Integer operationType) {
+        this.operationType = operationType;
+    }
 
     public Long getId() {
         return id;
