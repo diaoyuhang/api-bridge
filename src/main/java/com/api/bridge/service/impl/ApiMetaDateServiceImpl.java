@@ -38,7 +38,7 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
     @Transactional(rollbackFor = Exception.class)
     public void addApiMetaDate(ApiMetaDateReqDto apiMetaDateReqDto) {
         Long projectId = Long.parseLong(SecretUtil.decrypt(apiMetaDateReqDto.getProjectId()));
-        Assert.isTrue(projectDao.selectCountByPrimaryKey(projectId) > 0, String.format("%s  ", apiMetaDateReqDto.getProjectId()));
+        Assert.isTrue(projectDao.selectCountByPrimaryKey(projectId) > 0, String.format("%s 不存在", apiMetaDateReqDto.getProjectId()));
 
         TagGroup tagGroup = apiMetaDateReqDto.createTagGroup();
         TagGroup oldTagGroup = tagGroupDao.selectByPrimaryKey(tagGroup.getId());

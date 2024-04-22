@@ -9,10 +9,9 @@
     <result column="edit_time" jdbcType="TIMESTAMP" property="editTime" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="editor" jdbcType="VARCHAR" property="editor" />
-    <result column="rec_time" jdbcType="TIMESTAMP" property="recTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, project_id, path_type, create_time, edit_time, creator, editor, rec_time
+    id, project_id, path_type, create_time, edit_time, creator, editor
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -20,17 +19,28 @@
     from permission_path
     where id = #{id,jdbcType=BIGINT}
   </select>
+
+  <select id="selectIdByProjectId" resultType="java.lang.Long">
+        select id
+        from permission_path
+        where project_id = #{projectId}
+  </select>
+
+  <select id="selectProjectIdByUserIdAndPathType" resultType="java.lang.Long">
+    select t1.project_id from permission_path t1
+    where t1.id in (select t2.permission_id from user_permission t2 where user_id = #{userId} )
+      and t1.path_type=#{pathType}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from permission_path
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.PermissionPath" useGeneratedKeys="true">
     insert into permission_path (project_id, path_type, create_time, 
-      edit_time, creator, editor, 
-      rec_time)
+      edit_time, creator, editor)
     values (#{projectId,jdbcType=BIGINT}, #{pathType,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{editTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{editor,jdbcType=VARCHAR}, 
-      #{recTime,jdbcType=TIMESTAMP})
+      #{editTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{editor,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.PermissionPath" useGeneratedKeys="true">
     insert into permission_path
@@ -52,9 +62,6 @@
       </if>
       <if test="editor != null">
         editor,
-      </if>
-      <if test="recTime != null">
-        rec_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -81,6 +88,17 @@
       </if>
     </trim>
   </insert>
+
+  <insert id="batchInsert">
+    INSERT INTO permission_path(project_id, path_type, create_time,
+    edit_time, creator, editor) VALUES
+    <foreach collection="list" separator="," item="item">
+      (#{item.projectId,jdbcType=BIGINT}, #{item.pathType,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP},
+      #{item.editTime,jdbcType=TIMESTAMP}, #{item.creator,jdbcType=VARCHAR}, #{item.editor,jdbcType=VARCHAR})
+    </foreach>
+
+  </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.api.bridge.dao.domain.PermissionPath">
     update permission_path
     <set>
@@ -102,9 +120,6 @@
       <if test="editor != null">
         editor = #{editor,jdbcType=VARCHAR},
       </if>
-      <if test="recTime != null">
-        rec_time = #{recTime,jdbcType=TIMESTAMP},
-      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -115,8 +130,7 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       edit_time = #{editTime,jdbcType=TIMESTAMP},
       creator = #{creator,jdbcType=VARCHAR},
-      editor = #{editor,jdbcType=VARCHAR},
-      rec_time = #{recTime,jdbcType=TIMESTAMP}
+      editor = #{editor,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

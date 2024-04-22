@@ -17,7 +17,6 @@ public class ApiController {
     @Autowired
     private ApiMetaDateService apiMetaDateService;
     @PostMapping("/acceptApiMetaDate")
-    @RequestMapping("/")
     public ResultDto<String> acceptApiMetaDate(@RequestBody @Validated ApiMetaDateReqDto apiMetaDateReqDto) {
         apiMetaDateService.addApiMetaDate(apiMetaDateReqDto);
         return ResultDto.createSuccess("success");

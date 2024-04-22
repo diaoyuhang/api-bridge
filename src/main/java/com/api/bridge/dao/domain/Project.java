@@ -1,13 +1,18 @@
 package com.api.bridge.dao.domain;
 
-import java.io.Serializable;
+import com.api.bridge.dto.permission.PermissionPathType;
+import com.api.bridge.utils.UserHelperUtil;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * project
- * @author 
+ *
+ * @author
  */
-public class Project implements Serializable {
+public class Project {
     /**
      * 主键
      */
@@ -42,8 +47,6 @@ public class Project implements Serializable {
      * 修改人
      */
     private String editor;
-
-    private static final long serialVersionUID = 1L;
 
     public Long getId() {
         return id;
@@ -99,5 +102,19 @@ public class Project implements Serializable {
 
     public void setEditor(String editor) {
         this.editor = editor;
+    }
+
+    public List<PermissionPath> generatePermissionPath() {
+        List<PermissionPath> res = new ArrayList<>();
+        for (PermissionPathType value : PermissionPathType.values()) {
+            PermissionPath permissionPath = new PermissionPath();
+            permissionPath.setProjectId(this.id);
+            permissionPath.setPathType(value.getType());
+            UserHelperUtil.fillCreateInfo(permissionPath);
+            UserHelperUtil.fillEditInfo(permissionPath);
+
+            res.add(permissionPath);
+        }
+        return res;
     }
 }

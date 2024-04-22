@@ -1,13 +1,12 @@
 package com.api.bridge.dao.domain;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 项目权限路径
  * permission_path
  */
-public class PermissionPath implements Serializable {
+public class PermissionPath {
     /**
      * 主键
      */
@@ -42,13 +41,6 @@ public class PermissionPath implements Serializable {
      * 修改人
      */
     private String editor;
-
-    /**
-     * 时间戳
-     */
-    private Date recTime;
-
-    private static final long serialVersionUID = 1L;
 
     public Long getId() {
         return id;
@@ -106,11 +98,4 @@ public class PermissionPath implements Serializable {
         this.editor = editor;
     }
 
-    public Date getRecTime() {
-        return recTime;
-    }
-
-    public void setRecTime(Date recTime) {
-        this.recTime = recTime;
-    }
 }

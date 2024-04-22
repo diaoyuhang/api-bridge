@@ -5,6 +5,8 @@ import com.api.bridge.dao.domain.Project;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @Mapper
 public interface ProjectDao {
     int deleteByPrimaryKey(Long id);
@@ -20,4 +22,6 @@ public interface ProjectDao {
     int updateByPrimaryKey(Project record);
 
     Integer selectCountByPrimaryKey(Long projectId);
+
+    List<Project> selectByIds(List<Long> projectIds);
 }

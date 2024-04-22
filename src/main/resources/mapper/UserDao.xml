@@ -28,11 +28,11 @@
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.User" useGeneratedKeys="true">
     insert into user (`name`, email, `password`, 
       `status`, create_time, edit_time, 
-      creator, editor, rec_time
+      creator, editor
       )
     values (#{name,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{editTime,jdbcType=TIMESTAMP}, 
-      #{creator,jdbcType=VARCHAR}, #{editor,jdbcType=VARCHAR}, #{recTime,jdbcType=TIMESTAMP}
+      #{creator,jdbcType=VARCHAR}, #{editor,jdbcType=VARCHAR}
       )
   </insert>
 
@@ -46,7 +46,6 @@
       edit_time = #{editTime,jdbcType=TIMESTAMP},
       creator = #{creator,jdbcType=VARCHAR},
       editor = #{editor,jdbcType=VARCHAR},
-      rec_time = #{recTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 

@@ -1,13 +1,16 @@
 package com.api.bridge.dao.domain;
 
-import java.io.Serializable;
+import com.api.bridge.utils.UserHelperUtil;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 用户权限
  * user_permission
  */
-public class UserPermission implements Serializable {
+public class UserPermission  {
     /**
      * 主键
      */
@@ -43,12 +46,21 @@ public class UserPermission implements Serializable {
      */
     private String editor;
 
-    /**
-     * 时间戳
-     */
-    private Date recTime;
+    public static List<UserPermission> create(List<Long> permissionIds) {
+        List<UserPermission> res = new ArrayList<>();
+        User user = UserHelperUtil.getUser();
+        for (Long permissionId : permissionIds) {
+            UserPermission userPermission = new UserPermission();
+            userPermission.setPermissionId(permissionId);
+            userPermission.setUserId(user.getId());
 
-    private static final long serialVersionUID = 1L;
+            UserHelperUtil.fillCreateInfo(userPermission);
+            UserHelperUtil.fillEditInfo(userPermission);
+            res.add(userPermission);
+        }
+        return res;
+    }
+
 
     public Long getId() {
         return id;
@@ -106,11 +118,4 @@ public class UserPermission implements Serializable {
         this.editor = editor;
     }
 
-    public Date getRecTime() {
-        return recTime;
-    }
-
-    public void setRecTime(Date recTime) {
-        this.recTime = recTime;
-    }
 }
