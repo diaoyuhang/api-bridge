@@ -4,6 +4,7 @@ import com.api.bridge.dao.domain.User;
 import com.api.bridge.dto.validGroup.Insert;
 import com.api.bridge.dto.validGroup.Select;
 import com.api.bridge.dto.validGroup.Update;
+import com.api.bridge.utils.SecretUtil;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.BeanUtils;
 
@@ -52,6 +53,7 @@ public class UserReqDto {
     public User convertUser() {
         User user = new User();
         BeanUtils.copyProperties(this,user);
+        user.setPassword(SecretUtil.encrypt(user.getPassword()));
         return user;
     }
 }

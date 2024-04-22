@@ -20,7 +20,7 @@ public class GlobalExceptionConfig {
     @ResponseBody
     public ResultDto<String> exceptionHandler(Exception e) {
         logger.error("exceptionHandler:" + e.getMessage(), e);
-        return ResultDto.createFail(Status.GLOBAL_ERROR);
+        return ResultDto.createFail(Status.GLOBAL_ERROR,e.getMessage());
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)

@@ -1,15 +1,20 @@
 package com.api.bridge.dao.domain;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class User {
+    //状态|0-未激活，1-激活，2-停用
+    public static final Integer INACTIVATED_STATUS = 0;
+    public static final Integer ACTIVATED_STATUS = 1;
+    public static final Integer STOP_STATUS = 2;
     private Long id;
     private String name;
     private String email;
 
     private String password;
 
-    private Integer status;
+    private Integer status = INACTIVATED_STATUS;
 
     private Date createTime;
 
@@ -63,12 +68,12 @@ public class User {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
     public Date getEditTime() {
         return editTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public void setEditTime(Date editTime) {

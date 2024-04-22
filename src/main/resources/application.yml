@@ -3,7 +3,8 @@ spring:
   application:
     name: api-bridge
   datasource:
-    url: jdbc:mysql://192.168.80.100:3306/api_bridge?useSSL=false&autoReconnect=true&characterEncoding=utf8&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://192.168.137.10:3306/api_bridge?useSSL=false&autoReconnect=true&characterEncoding=utf8&allowPublicKeyRetrieval=true
+#    url: jdbc:mysql://192.168.80.100:3306/api_bridge?useSSL=false&autoReconnect=true&characterEncoding=utf8&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456
@@ -19,5 +20,7 @@ spring:
       connection-test-query: SELECT 1
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
 server:
   port: 8080

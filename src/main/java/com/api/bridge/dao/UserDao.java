@@ -6,11 +6,11 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface UserDao {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long id);
 
     int insert(User record);
 
-    User selectByPrimaryKey(Integer id);
+    User selectByPrimaryKey(Long id);
 
     int updateByPrimaryKey(User record);
 

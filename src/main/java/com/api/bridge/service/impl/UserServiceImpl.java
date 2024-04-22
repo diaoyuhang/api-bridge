@@ -4,6 +4,7 @@ import com.api.bridge.dao.UserDao;
 import com.api.bridge.dao.domain.User;
 import com.api.bridge.dto.user.UserReqDto;
 import com.api.bridge.service.UserService;
+import com.api.bridge.utils.SecretUtil;
 import com.api.bridge.utils.UserHelperUtil;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
     public User login(User user) {
         User oldUser = userDao.selectByEmailAndPassword(user);
         Assert.isTrue(oldUser != null, "用户名或密码错误");
-
+        Assert.isTrue(oldUser.getStatus().equals(User.ACTIVATED_STATUS),"账号不是激活状态");
         return oldUser;
     }
 
@@ -43,7 +44,9 @@ public class UserServiceImpl implements UserService {
     public User editInfo(UserReqDto userReqDto) {
         User oldUser = userDao.selectByEmailAndPassword(userReqDto.convertUser());
         Assert.isTrue(oldUser != null, "密码错误");
-        oldUser.setPassword(userReqDto.getNewPassword());
+        Assert.isTrue(oldUser.getStatus().equals(User.ACTIVATED_STATUS),"账号不是激活状态");
+
+        oldUser.setPassword(SecretUtil.encrypt(userReqDto.getNewPassword()));
         oldUser.setName(userReqDto.getName());
         UserHelperUtil.fillEditInfo(oldUser);
         userDao.updateByPrimaryKey(oldUser);

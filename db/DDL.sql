@@ -8,7 +8,7 @@ CREATE TABLE user
     name        varchar(50)  NOT NULL comment '用户名',
     email       varchar(100) NOT NULL comment '用户邮箱',
     password    varchar(100) NOT NULL comment '用户密码',
-    statue      int          not null default 0 comment '状态|0-未激活，1-激活，2-停用',
+    status      int          not null default 0 comment '状态|0-未激活，1-激活，2-停用',
     create_time datetime     not null comment '创建时间',
     edit_time   datetime     not null comment '编辑时间',
     creator     varchar(50)  not null comment '创建人',
