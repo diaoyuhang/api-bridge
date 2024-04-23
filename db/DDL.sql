@@ -23,13 +23,14 @@ CREATE TABLE project
     id          BIGINT AUTO_INCREMENT PRIMARY KEY comment '主键',
     name        varchar(100) NOT NULL comment '项目名',
     description varchar(255) NOT NULL comment '描述',
+    status      int          not null default 1 comment '状态|1-正常，0-删除状态',
     create_time datetime     not null comment '创建时间',
     edit_time   datetime     not null comment '编辑时间',
     creator     varchar(50)  not null comment '创建人',
     editor      varchar(50)  not null comment '修改人',
     rec_time    timestamp    not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '时间戳',
-    INDEX project_edit_time (edit_time),
-    INDEX project_name (name)
+    INDEX       project_edit_time (edit_time),
+    INDEX       project_name ( name)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 comment ='项目';
 
@@ -93,7 +94,7 @@ CREATE TABLE permission_path
 (
     id          BIGINT AUTO_INCREMENT PRIMARY KEY comment '主键',
     project_id  BIGINT      NOT NULL comment '项目id',
-    path_type   int         NOT NULL COMMENT '权限路径类型|1-项目查看，2-项目编辑，3-项目删除，4-上传接口，5-接口删除',
+    path_type   int         NOT NULL COMMENT '权限路径类型|0-权限修改,1-项目查看，2-项目编辑，3-项目删除，4-上传接口，5-接口删除',
     create_time datetime    not null comment '创建时间',
     edit_time   datetime    not null comment '编辑时间',
     creator     varchar(50) not null comment '创建人',

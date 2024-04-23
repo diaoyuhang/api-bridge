@@ -22,6 +22,6 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     public void validate(Long projectId, PermissionPathType permissionPathType) {
         User user = UserHelperUtil.getUser();
         int num = userPermissionDao.selectCountByProjectIdAndPathTypeAndUserId(projectId,permissionPathType.getType(),user.getId());
-        Assert.isTrue(num>0,"没有权限");
+        Assert.isTrue(num > 0, "没有权限");
     }
 }

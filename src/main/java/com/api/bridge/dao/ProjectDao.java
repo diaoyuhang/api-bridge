@@ -13,8 +13,6 @@ public interface ProjectDao {
 
     int insert(Project record);
 
-    int insertSelective(Project record);
-
     Project selectByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(Project record);

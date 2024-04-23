@@ -11,4 +11,6 @@ public interface ProjectService {
     List<Project> getProjectList();
 
     void editInfo(ProjectReqDto projectReqDto);
+
+    void deleteProject(Long projectId);
 }

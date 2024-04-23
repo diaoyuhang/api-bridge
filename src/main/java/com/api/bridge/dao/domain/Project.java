@@ -13,6 +13,12 @@ import java.util.List;
  * @author
  */
 public class Project {
+
+    //状态|1-正常，0-删除
+    public static final Integer NORMAL_STATUS=1;
+    public static final Integer DELETE_STATUS=0;
+
+
     /**
      * 主键
      */
@@ -27,6 +33,10 @@ public class Project {
      * 描述
      */
     private String description;
+    /**
+     * 状态|1-正常，0-删除
+     */
+    private Integer status = 1;
 
     /**
      * 创建时间
@@ -47,6 +57,14 @@ public class Project {
      * 修改人
      */
     private String editor;
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     public Long getId() {
         return id;

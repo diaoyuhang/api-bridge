@@ -1,6 +1,7 @@
 package com.api.bridge.dto.permission;
 
 public enum PermissionPathType {
+    PERMISSION_EDIT(0,"权限修改"),
 
     PROJECT_VIEW(1,"项目查看"),
     PROJECT_EDIT(2,"项目编辑"),

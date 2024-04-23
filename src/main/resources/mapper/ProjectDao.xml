@@ -5,13 +5,14 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="edit_time" jdbcType="TIMESTAMP" property="editTime" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="editor" jdbcType="VARCHAR" property="editor" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, `name`, description, create_time, edit_time, creator, editor
+    id, `name`, description,status, create_time, edit_time, creator, editor
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -37,59 +38,16 @@
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from project
+    update project set status = 0
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.Project" useGeneratedKeys="true">
-    insert into project (`name`, description, create_time, 
+    insert into project (`name`, description,status, create_time,
       edit_time, creator, editor
       )
-    values (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+    values (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
       #{editTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{editor,jdbcType=VARCHAR}
       )
-  </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.Project" useGeneratedKeys="true">
-    insert into project
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="name != null">
-        `name`,
-      </if>
-      <if test="description != null">
-        description,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="editTime != null">
-        edit_time,
-      </if>
-      <if test="creator != null">
-        creator,
-      </if>
-      <if test="editor != null">
-        editor,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="editTime != null">
-        #{editTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="creator != null">
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="editor != null">
-        #{editor,jdbcType=VARCHAR},
-      </if>
-    </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.api.bridge.dao.domain.Project">
     update project
@@ -99,6 +57,9 @@
       </if>
       <if test="description != null">
         description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -119,6 +80,7 @@
     update project
     set `name` = #{name,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
+        status = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       edit_time = #{editTime,jdbcType=TIMESTAMP},
       creator = #{creator,jdbcType=VARCHAR},

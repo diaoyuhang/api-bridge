@@ -46,6 +46,16 @@ public class UserPermission  {
      */
     private String editor;
 
+    public static UserPermission create(Long userId,Long permissionId){
+        UserPermission userPermission = new UserPermission();
+        userPermission.setUserId(userId);
+        userPermission.setPermissionId(permissionId);
+
+        UserHelperUtil.fillCreateInfo(userPermission);
+        UserHelperUtil.fillEditInfo(userPermission);
+
+        return userPermission;
+    }
     public static List<UserPermission> create(List<Long> permissionIds) {
         List<UserPermission> res = new ArrayList<>();
         User user = UserHelperUtil.getUser();

@@ -62,11 +62,18 @@ public class ProjectServiceImpl implements ProjectService {
     public void editInfo(ProjectReqDto projectReqDto) {
         Project project = projectReqDto.convertProject();
         Project oldProject = projectDao.selectByPrimaryKey(project.getId());
-        Assert.isTrue(oldProject!=null,"项目id不存在");
+        Assert.isTrue(oldProject != null, "项目id不存在");
 
         oldProject.setName(project.getName());
         oldProject.setDescription(project.getDescription());
         UserHelperUtil.fillEditInfo(oldProject);
         projectDao.updateByPrimaryKey(oldProject);
+    }
+
+    @Override
+    public void deleteProject(Long projectId) {
+        Project oldProject = projectDao.selectByPrimaryKey(projectId);
+        Assert.isTrue(oldProject != null, "项目id不存在");
+        projectDao.deleteByPrimaryKey(projectId);
     }
 }

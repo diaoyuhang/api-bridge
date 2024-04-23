@@ -20,6 +20,20 @@ public class GlobalExceptionConfig {
     @ResponseBody
     public ResultDto<String> exceptionHandler(Exception e) {
         logger.error("exceptionHandler:" + e.getMessage(), e);
+        return ResultDto.createFail(Status.GLOBAL_ERROR);
+    }
+
+    @ExceptionHandler(value = IllegalArgumentException.class)
+    @ResponseBody
+    public ResultDto<String> illegalArgumentExceptionHandler(IllegalArgumentException e) {
+        logger.error("illegalArgumentExceptionHandler:" + e.getMessage(), e);
+        return ResultDto.createFail(Status.GLOBAL_ERROR,e.getMessage());
+    }
+
+    @ExceptionHandler(value = RuntimeException.class)
+    @ResponseBody
+    public ResultDto<String> runtimeExceptionHandler(RuntimeException e) {
+        logger.error("runtimeExceptionHandler:" + e.getMessage(), e);
         return ResultDto.createFail(Status.GLOBAL_ERROR,e.getMessage());
     }
 

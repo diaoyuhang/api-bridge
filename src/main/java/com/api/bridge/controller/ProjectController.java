@@ -6,6 +6,7 @@ import com.api.bridge.dto.ResultDto;
 import com.api.bridge.dto.permission.PermissionPathType;
 import com.api.bridge.dto.project.ProjectReqDto;
 import com.api.bridge.dto.project.ProjectResDto;
+import com.api.bridge.dto.validGroup.Delete;
 import com.api.bridge.dto.validGroup.Insert;
 import com.api.bridge.dto.validGroup.Update;
 import com.api.bridge.service.AuthorizationService;
@@ -50,6 +51,14 @@ public class ProjectController {
     public ResultDto<String> editProject(@RequestBody @Validated({Update.class}) ProjectReqDto projectReqDto){
         authorizationService.validate(Long.parseLong(SecretUtil.decrypt(projectReqDto.getProjectId())), PermissionPathType.PROJECT_EDIT);
         projectService.editInfo(projectReqDto);
+        return ResultDto.createSuccess(Status.ok.getMessage());
+    }
+
+    @PostMapping("/deleteProject")
+    public ResultDto<String> deleteProject(@RequestBody @Validated({Delete.class}) ProjectReqDto projectReqDto){
+        Long projectId = Long.parseLong(SecretUtil.decrypt(projectReqDto.getProjectId()));
+        authorizationService.validate(projectId, PermissionPathType.PROJECT_DELETE);
+        projectService.deleteProject(projectId);
         return ResultDto.createSuccess(Status.ok.getMessage());
     }
 }
