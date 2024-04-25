@@ -23,11 +23,21 @@ public class UserPermissionServiceImpl implements UserPermissionService {
     public void addPermission(UserPermissionReqDto userPermissionReqDto) {
         Long projectId = Long.parseLong(userPermissionReqDto.getProjectId());
         Long userId = Long.parseLong(userPermissionReqDto.getUserId());
-        Long id = permissionPathDao.selectIdByProjectIdAndType(projectId,userId);
+        Long permissionId = permissionPathDao.selectIdByProjectIdAndType(projectId,userId);
 
-        Assert.notNull(id,"权限id未null");
-        UserPermission userPermission = UserPermission.create(userId, id);
+        Assert.notNull(permissionId,"权限id为null");
+        UserPermission userPermission = UserPermission.create(userId, permissionId);
 
         userPermissionDao.insert(userPermission);
+    }
+
+    @Override
+    public void deletePermission(UserPermissionReqDto userPermissionReqDto) {
+        Long projectId = Long.parseLong(userPermissionReqDto.getProjectId());
+        Long userId = Long.parseLong(userPermissionReqDto.getUserId());
+        Long permissionId = permissionPathDao.selectIdByProjectIdAndType(projectId,userId);
+
+        Assert.notNull(permissionId,"权限id为null");
+        userPermissionDao.deleteByUseIdAndPermissionId(userId,permissionId);
     }
 }

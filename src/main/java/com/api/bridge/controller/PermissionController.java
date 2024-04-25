@@ -25,7 +25,7 @@ import java.util.List;
 public class PermissionController {
     @Autowired
     private AuthorizationService authorizationService;
-
+    @Autowired
     private UserPermissionService userPermissionService;
     @GetMapping("/getPermissionTypeList")
     public ResultDto<List<PermissionPathTypeResDto>> getPermissionTypeList(){
@@ -41,6 +41,13 @@ public class PermissionController {
     public ResultDto<String> addPermission(@RequestBody @Validated UserPermissionReqDto userPermissionReqDto){
         authorizationService.validate(Long.parseLong(SecretUtil.decrypt(userPermissionReqDto.getProjectId())), PermissionPathType.PERMISSION_EDIT);
         userPermissionService.addPermission(userPermissionReqDto);
+        return ResultDto.createSuccess(Status.ok.getMessage());
+    }
+
+    @PostMapping("/deletePermission")
+    public ResultDto<String> deletePermission(@RequestBody @Validated UserPermissionReqDto userPermissionReqDto){
+        authorizationService.validate(Long.parseLong(SecretUtil.decrypt(userPermissionReqDto.getProjectId())), PermissionPathType.PERMISSION_EDIT);
+        userPermissionService.deletePermission(userPermissionReqDto);
         return ResultDto.createSuccess(Status.ok.getMessage());
     }
 }

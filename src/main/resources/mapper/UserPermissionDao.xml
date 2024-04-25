@@ -32,6 +32,11 @@
     delete from user_permission
     where id = #{id,jdbcType=BIGINT}
   </delete>
+  <delete id="deleteByUseIdAndPermissionId">
+    delete from     user_permission
+    where user_id =#{userId} and permission_id = #{permissionId}
+
+  </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.UserPermission" useGeneratedKeys="true">
     insert into user_permission (user_id, permission_id, create_time, 
       edit_time, creator, editor)

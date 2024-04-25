@@ -24,4 +24,6 @@ public interface UserPermissionDao {
     void batchInsert(List<UserPermission> userPermissionList);
 
     int selectCountByProjectIdAndPathTypeAndUserId(@Param("projectId") Long projectId,@Param("pathType") Integer pathType,@Param("userId") Long userId);
+
+    void deleteByUseIdAndPermissionId(@Param("userId")Long userId,@Param("permissionId") Long permissionId);
 }

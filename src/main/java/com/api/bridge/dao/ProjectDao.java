@@ -2,14 +2,14 @@ package com.api.bridge.dao;
 
 
 import com.api.bridge.dao.domain.Project;
+import com.api.bridge.dao.domain.User;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 @Mapper
 public interface ProjectDao {
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(Long id, String editor);
 
     int insert(Project record);
 
