@@ -8,7 +8,9 @@ import com.api.bridge.dao.domain.ApiMetaDate;
 import com.api.bridge.dao.domain.ApiMetaDateHistory;
 import com.api.bridge.dao.domain.TagGroup;
 import com.api.bridge.dto.api.ApiMetaDateReqDto;
+import com.api.bridge.dto.permission.PermissionPathType;
 import com.api.bridge.service.ApiMetaDateService;
+import com.api.bridge.service.AuthorizationService;
 import com.api.bridge.utils.SecretUtil;
 import com.api.bridge.utils.UserHelperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,5 +67,18 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
             }
         }
 
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteApiMetaDate(Long apiId) {
+        ApiMetaDate apiMetaDate = apiMetaDateDao.selectByPrimaryKey(apiId);
+        Assert.notNull(apiMetaDate,"未查询到对应的api信息");
+        apiMetaDateDao.deleteByPrimaryKey(apiId);
+    }
+
+    @Override
+    public Long getProjectIdByApiId(Long apiId) {
+        return apiMetaDateDao.selectProjectIdByApiId(apiId);
     }
 }

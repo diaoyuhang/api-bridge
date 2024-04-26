@@ -31,7 +31,15 @@
     where tag_id = #{tagId} and path=#{path} and method = #{method,jdbcType=VARCHAR}
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <select id="selectProjectIdByApiId" resultType="java.lang.Long">
+      select t1.project_id
+      from tag_group t1
+      where t1.id = (select t2.tag_id
+                     from api_meta_date t2
+                     where t2.id = #{id})
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from api_meta_date
     where id = #{id,jdbcType=BIGINT}
   </delete>

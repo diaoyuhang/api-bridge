@@ -2,6 +2,8 @@ package com.api.bridge.dto.api;
 
 import com.api.bridge.dao.domain.ApiMetaDate;
 import com.api.bridge.dao.domain.TagGroup;
+import com.api.bridge.dto.validGroup.Delete;
+import com.api.bridge.dto.validGroup.Insert;
 import com.api.bridge.utils.OpenApiUtil;
 import com.api.bridge.utils.SecretUtil;
 import com.api.bridge.utils.UserHelperUtil;
@@ -22,14 +24,23 @@ public class ApiMetaDateReqDto {
     public static final String DELETE_METHOD = "delete";
     public static final String PUT_METHOD = "put";
     public static final String POST_METHOD = "post";
-
-    @NotBlank(message = "tagId is empty")
+    @NotBlank(message = "apiId is empty",groups = {Delete.class})
+    private String apiId;
+    @NotBlank(message = "tagId is empty",groups = {Insert.class})
     private String tagId;
-    @NotBlank(message = "tagName is empty")
+    @NotBlank(message = "tagName is empty",groups = {Insert.class})
     private String tagName;
-    @NotBlank(message = "projectId is empty")
+    @NotBlank(message = "projectId is empty",groups = {Insert.class})
     private String projectId;
     private List<String> apiMeteDateList;
+
+    public String getApiId() {
+        return apiId;
+    }
+
+    public void setApiId(String apiId) {
+        this.apiId = apiId;
+    }
 
     public String getProjectId() {
         return projectId;

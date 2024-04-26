@@ -2,7 +2,6 @@ package com.api.bridge.service.impl;
 
 import com.api.bridge.dao.UserPermissionDao;
 import com.api.bridge.dao.domain.User;
-import com.api.bridge.dao.domain.UserPermission;
 import com.api.bridge.dto.permission.PermissionPathType;
 import com.api.bridge.service.AuthorizationService;
 import com.api.bridge.utils.UserHelperUtil;

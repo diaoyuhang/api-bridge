@@ -44,7 +44,8 @@ CREATE TABLE tag_group
     creator     varchar(50)  not null comment '创建人',
     editor      varchar(50)  not null comment '修改人',
     rec_time    timestamp    not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '时间戳',
-    INDEX tag_group_project_id (project_id)
+    INDEX tag_group_project_id (project_id),
+    INDEX tag_group_create_time (create_time)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 comment ='接口标签组';
 
@@ -85,8 +86,9 @@ CREATE TABLE api_meta_date_history
     creator        varchar(50)  not null comment '创建人',
     editor         varchar(50)  not null comment '修改人',
     rec_time       timestamp    not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '时间戳',
-    INDEX api_meta_date_uuid (tag_id),
-    INDEX api_meta_date_edit_time (edit_time)
+    INDEX aapi_meta_date_history_uuid (tag_id),
+    INDEX api_meta_date_history_edit_time (edit_time),
+    INDEX api_meta_date_history_path (path)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 comment ='接口信息操作历史';
 

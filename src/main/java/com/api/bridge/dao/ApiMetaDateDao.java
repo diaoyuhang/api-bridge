@@ -18,4 +18,6 @@ public interface ApiMetaDateDao {
     int updateByPrimaryKey(ApiMetaDate record);
 
     ApiMetaDate selectByTagIdAndPathAndMethod(ApiMetaDate apiMetaDate);
+
+    Long selectProjectIdByApiId(Long id);
 }
