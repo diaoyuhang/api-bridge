@@ -59,6 +59,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void editInfo(ProjectReqDto projectReqDto) {
         Project project = projectReqDto.convertProject();
         Project oldProject = projectDao.selectByPrimaryKey(project.getId());
@@ -71,6 +72,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteProject(Long projectId) {
         Project oldProject = projectDao.selectByPrimaryKey(projectId);
         Assert.isTrue(oldProject != null, "项目id不存在");

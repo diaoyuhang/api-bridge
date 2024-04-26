@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 @Service
@@ -20,6 +21,7 @@ public class UserPermissionServiceImpl implements UserPermissionService {
     @Autowired
     private UserPermissionDao userPermissionDao;
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void addPermission(UserPermissionReqDto userPermissionReqDto) {
         Long projectId = Long.parseLong(userPermissionReqDto.getProjectId());
         Long userId = Long.parseLong(userPermissionReqDto.getUserId());
@@ -32,6 +34,7 @@ public class UserPermissionServiceImpl implements UserPermissionService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deletePermission(UserPermissionReqDto userPermissionReqDto) {
         Long projectId = Long.parseLong(userPermissionReqDto.getProjectId());
         Long userId = Long.parseLong(userPermissionReqDto.getUserId());

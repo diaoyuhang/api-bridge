@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public User editInfo(UserReqDto userReqDto) {
         User oldUser = userDao.selectByEmailAndPassword(userReqDto.convertUser());
         Assert.isTrue(oldUser != null, "密码错误");
