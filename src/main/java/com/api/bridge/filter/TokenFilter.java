@@ -2,10 +2,15 @@ package com.api.bridge.filter;
 
 import com.api.bridge.constant.BaseConstant;
 import com.api.bridge.utils.ReqThreadInfoUtil;
-import io.micrometer.common.util.StringUtils;
-import jakarta.servlet.*;
-import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
 
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;

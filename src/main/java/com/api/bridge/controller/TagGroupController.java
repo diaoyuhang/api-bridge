@@ -6,13 +6,13 @@ import com.api.bridge.dto.tag.TagGroupResDto;
 import com.api.bridge.service.AuthorizationService;
 import com.api.bridge.service.TagGroupService;
 import com.api.bridge.utils.SecretUtil;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @RestController

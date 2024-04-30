@@ -5,8 +5,9 @@ import com.api.bridge.dto.validGroup.Insert;
 import com.api.bridge.dto.validGroup.Select;
 import com.api.bridge.dto.validGroup.Update;
 import com.api.bridge.utils.SecretUtil;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.BeanUtils;
+
+import javax.validation.constraints.NotBlank;
 
 public class UserReqDto {
     @NotBlank(message = "name is empty",groups = {Insert.class, Update.class})

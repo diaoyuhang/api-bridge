@@ -1,14 +1,14 @@
 package com.api.bridge.dto.project;
 
 import com.api.bridge.dao.domain.Project;
-import com.api.bridge.dao.domain.User;
 import com.api.bridge.dto.validGroup.Delete;
 import com.api.bridge.dto.validGroup.Select;
 import com.api.bridge.dto.validGroup.Update;
 import com.api.bridge.utils.SecretUtil;
 import com.api.bridge.utils.UserHelperUtil;
-import jakarta.validation.constraints.NotBlank;
 import org.apache.commons.lang3.StringUtils;
+
+import javax.validation.constraints.NotBlank;
 
 public class ProjectReqDto {
 

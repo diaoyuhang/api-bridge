@@ -6,11 +6,11 @@ import com.api.bridge.dto.user.UserReqDto;
 import com.api.bridge.service.UserService;
 import com.api.bridge.utils.SecretUtil;
 import com.api.bridge.utils.UserHelperUtil;
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import javax.annotation.Resource;
 import java.util.Date;
 
 @Service

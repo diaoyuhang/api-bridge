@@ -11,6 +11,7 @@ import com.api.bridge.dto.validGroup.Insert;
 import com.api.bridge.service.ApiMetaDateService;
 import com.api.bridge.service.AuthorizationService;
 import com.api.bridge.utils.SecretUtil;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
@@ -25,6 +26,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@Tag(name = "/clients")
 public class ApiController {
 
     @Autowired
