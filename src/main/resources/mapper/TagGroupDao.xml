@@ -19,6 +19,13 @@
     from tag_group
     where id = #{id,jdbcType=VARCHAR}
   </select>
+
+  <select id="selectByProjectId" resultType="com.api.bridge.dao.domain.TagGroup">
+    select id,name
+        from tag_group
+    where project_id = #{projectId}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from tag_group
     where id = #{id,jdbcType=VARCHAR}

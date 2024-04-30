@@ -23,4 +23,11 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         int num = userPermissionDao.selectCountByProjectIdAndPathTypeAndUserId(projectId,permissionPathType.getType(),user.getId());
         Assert.isTrue(num > 0, "没有权限");
     }
+
+    @Override
+    public void validateByTagId(String tagId, PermissionPathType permissionPathType) {
+        User user = UserHelperUtil.getUser();
+        int num = userPermissionDao.selectCountByTagIdAndPathTypeAndUserId(tagId,permissionPathType.getType(),user.getId());
+        Assert.isTrue(num > 0, "没有权限");
+    }
 }

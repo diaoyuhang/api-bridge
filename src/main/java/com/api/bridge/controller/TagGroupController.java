@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/project")
 @Validated
@@ -24,8 +26,10 @@ public class TagGroupController {
     @Autowired
     private TagGroupService tagGroupService;
     @GetMapping("/getTagGroupList")
-    public ResultDto<TagGroupResDto> getTagGroupList(@NotBlank(message = "projectId is empty") String projectId){
-        authorizationService.validate(Long.parseLong(SecretUtil.decrypt(projectId)), PermissionPathType.PROJECT_EDIT);
-        return ResultDto.createSuccess(null);
+    public ResultDto<List<TagGroupResDto>> getTagGroupList(@NotBlank(message = "projectId is empty") String projectId){
+        Long pId = Long.parseLong(SecretUtil.decrypt(projectId));
+        authorizationService.validate(pId, PermissionPathType.PROJECT_VIEW);
+        List<TagGroupResDto> res = tagGroupService.getTagGroupList(pId);
+        return ResultDto.createSuccess(res);
     }
 }

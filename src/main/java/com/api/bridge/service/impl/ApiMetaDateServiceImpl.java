@@ -8,9 +8,8 @@ import com.api.bridge.dao.domain.ApiMetaDate;
 import com.api.bridge.dao.domain.ApiMetaDateHistory;
 import com.api.bridge.dao.domain.TagGroup;
 import com.api.bridge.dto.api.ApiMetaDateReqDto;
-import com.api.bridge.dto.permission.PermissionPathType;
+import com.api.bridge.dto.api.PathInfoResDto;
 import com.api.bridge.service.ApiMetaDateService;
-import com.api.bridge.service.AuthorizationService;
 import com.api.bridge.utils.SecretUtil;
 import com.api.bridge.utils.UserHelperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ApiMetaDateServiceImpl implements ApiMetaDateService {
-
-
 
     @Autowired
     private TagGroupDao tagGroupDao;
@@ -80,5 +78,19 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
     @Override
     public Long getProjectIdByApiId(Long apiId) {
         return apiMetaDateDao.selectProjectIdByApiId(apiId);
+    }
+
+    @Override
+    public List<PathInfoResDto> getPathInfo(String tagId) {
+        List<ApiMetaDate> apiMetaDateList = apiMetaDateDao.selectPathInfoByTagId(tagId);
+
+        return apiMetaDateList.stream().map(a->PathInfoResDto.create(a)).collect(Collectors.toList());
+    }
+
+    @Override
+    public ApiMetaDate getMetaDateInfo(Long apiId) {
+        ApiMetaDate apiMetaDate = apiMetaDateDao.selectByPrimaryKey(apiId);
+        Assert.notNull(apiMetaDate,"未查询到api元数据");
+        return apiMetaDate;
     }
 }
