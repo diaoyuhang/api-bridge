@@ -1,4 +1,3 @@
-
 spring:
   application:
     name: api-bridge
@@ -24,3 +23,8 @@ mybatis:
     map-underscore-to-camel-case: true
 server:
   port: 8080
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
