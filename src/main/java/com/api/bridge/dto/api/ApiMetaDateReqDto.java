@@ -100,20 +100,24 @@ public class ApiMetaDateReqDto {
                 Assert.isTrue(StringUtils.isNotEmpty(openAPI.getTags().get(0).getDescription()), "tag description为空");
 
                 Paths paths = openAPI.getPaths();
-                Assert.isTrue(CollectionUtils.isEmpty(paths), "path信息为空");
-                Assert.isTrue(paths.entrySet().size() > 1, "paths长度大于1");
+                Assert.isTrue(!CollectionUtils.isEmpty(paths), "path信息为空");
+                Assert.isTrue(paths.entrySet().size() == 1, "paths长度大于1");
                 for (Map.Entry<String, PathItem> entry : paths.entrySet()) {
                     String path = entry.getKey();
                     PathItem value = entry.getValue();
 
                     if (value.getGet() != null) {
                         apiMetaDate.setMethod(GET_METHOD);
+                        apiMetaDate.setSummary(value.getGet().getSummary());
                     } else if (value.getPost() != null) {
                         apiMetaDate.setMethod(POST_METHOD);
+                        apiMetaDate.setSummary(value.getPost().getSummary());
                     } else if (value.getPut() != null) {
                         apiMetaDate.setMethod(PUT_METHOD);
+                        apiMetaDate.setSummary(value.getPut().getSummary());
                     } else if (value.getDelete() != null) {
                         apiMetaDate.setMethod(DELETE_METHOD);
+                        apiMetaDate.setSummary(value.getDelete().getSummary());
                     }
                     apiMetaDate.setPath(path);
                 }

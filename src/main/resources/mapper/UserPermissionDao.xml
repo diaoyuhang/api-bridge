@@ -47,7 +47,16 @@
     where user_id =#{userId} and permission_id = #{permissionId}
 
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.UserPermission" useGeneratedKeys="true">
+
+    <delete id="deletePermissionByProjectId">
+      delete
+      from user_permission t1
+      where t1.permission_id
+              in (select t2.id from permission_path t2 where t2.project_id = #{projectId})
+
+    </delete>
+
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.UserPermission" useGeneratedKeys="true">
     insert into user_permission (user_id, permission_id, create_time, 
       edit_time, creator, editor)
     values (#{userId,jdbcType=BIGINT}, #{permissionId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 

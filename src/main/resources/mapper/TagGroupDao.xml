@@ -30,56 +30,13 @@
     delete from tag_group
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.TagGroup" useGeneratedKeys="true">
-    insert into tag_group (project_id, `name`, create_time, 
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.TagGroup">
+    insert into tag_group (id,project_id, `name`, create_time,
       edit_time, creator, editor
       )
-    values (#{projectId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+    values (#{id,jdbcType=VARCHAR},#{projectId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
       #{editTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{editor,jdbcType=VARCHAR}
       )
-  </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.TagGroup" useGeneratedKeys="true">
-    insert into tag_group
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="projectId != null">
-        project_id,
-      </if>
-      <if test="name != null">
-        `name`,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="editTime != null">
-        edit_time,
-      </if>
-      <if test="creator != null">
-        creator,
-      </if>
-      <if test="editor != null">
-        editor,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="projectId != null">
-        #{projectId,jdbcType=BIGINT},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="editTime != null">
-        #{editTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="creator != null">
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="editor != null">
-        #{editor,jdbcType=VARCHAR},
-      </if>
-    </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.api.bridge.dao.domain.TagGroup">
     update tag_group

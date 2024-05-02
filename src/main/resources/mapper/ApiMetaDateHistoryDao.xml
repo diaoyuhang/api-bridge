@@ -31,11 +31,11 @@
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.ApiMetaDateHistory" useGeneratedKeys="true">
     insert into api_meta_date_history (api_id, tag_id, `path`, 
-      `method`, summary, meta_date, operation_type
+      `method`, summary, meta_date, operation_type,
       create_time, edit_time, creator, 
       editor)
     values (#{apiId,jdbcType=BIGINT}, #{tagId,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
-      #{method,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{metaDate,jdbcType=VARCHAR}, #{operationType,jdbcType=INTEGER}
+      #{method,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{metaDate,jdbcType=VARCHAR}, #{operationType,jdbcType=INTEGER},
       #{createTime,jdbcType=TIMESTAMP}, #{editTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, 
       #{editor,jdbcType=VARCHAR})
   </insert>

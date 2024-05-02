@@ -16,7 +16,7 @@ public class PathInfoResDto {
         PathInfoResDto pathInfoResDto = new PathInfoResDto();
         pathInfoResDto.setApiId(SecretUtil.encrypt(apiMetaDate.getId().toString()));
         pathInfoResDto.setPath(apiMetaDate.getPath());
-        pathInfoResDto.setMethod(pathInfoResDto.getMethod());
+        pathInfoResDto.setMethod(apiMetaDate.getMethod());
         pathInfoResDto.setSummary(apiMetaDate.getSummary());
 
         return pathInfoResDto;

@@ -77,5 +77,7 @@ public class ProjectServiceImpl implements ProjectService {
         Project oldProject = projectDao.selectByPrimaryKey(projectId);
         Assert.isTrue(oldProject != null, "项目id不存在");
         projectDao.deleteByPrimaryKey(projectId,UserHelperUtil.getUser().getEmail());
+
+        userPermissionDao.deletePermissionByProjectId(projectId);
     }
 }

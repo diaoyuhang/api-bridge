@@ -26,7 +26,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@Tag(name = "/clients")
 public class ApiController {
 
     @Autowired
@@ -60,8 +59,8 @@ public class ApiController {
     }
 
     @GetMapping("/apiMetaDateInfo/{apiId}")
-    public ResultDto<String> apiMetaDateInfo(@PathVariable(value = "apiId") String apiId){
+    public String apiMetaDateInfo(@PathVariable(value = "apiId") String apiId){
         ApiMetaDate apiMetaDate = apiMetaDateService.getMetaDateInfo(Long.parseLong(SecretUtil.decrypt(apiId)));
-        return ResultDto.createSuccess(apiMetaDate.getMetaDate());
+        return apiMetaDate.getMetaDate();
     }
 }

@@ -4,12 +4,13 @@ package com.api.bridge.dao;
 import com.api.bridge.dao.domain.Project;
 import com.api.bridge.dao.domain.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 @Mapper
 public interface ProjectDao {
-    int deleteByPrimaryKey(Long id, String editor);
+    int deleteByPrimaryKey(@Param("id") Long id,@Param("editor") String editor);
 
     int insert(Project record);
 

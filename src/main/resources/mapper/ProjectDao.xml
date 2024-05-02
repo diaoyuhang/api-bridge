@@ -14,6 +14,10 @@
   <sql id="Base_Column_List">
     id, `name`, description,status, create_time, edit_time, creator, editor
   </sql>
+  <delete id="deleteByPrimaryKey">
+    update project set status = 0,editor=#{editor,jdbcType=VARCHAR},edit_time=current_timestamp()
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -37,10 +41,7 @@
     </foreach>
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    update project set status = 0,editor=#{editor,jdbcType=VARCHAR},edit_time=current_timestamp()
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
+
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.Project" useGeneratedKeys="true">
     insert into project (`name`, description,status, create_time,
       edit_time, creator, editor

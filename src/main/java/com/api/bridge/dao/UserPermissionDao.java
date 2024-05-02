@@ -27,4 +27,6 @@ public interface UserPermissionDao {
     void deleteByUseIdAndPermissionId(@Param("userId")Long userId,@Param("permissionId") Long permissionId);
 
     int selectCountByTagIdAndPathTypeAndUserId(@Param("tagId")String tagId, @Param("pathType") Integer pathType, @Param("userId") Long userId);
+
+    void deletePermissionByProjectId(Long projectId);
 }
