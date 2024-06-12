@@ -16,7 +16,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @RestController
-@RequestMapping("/project")
+@RequestMapping("/tag")
 @Validated
 public class TagGroupController {
 
