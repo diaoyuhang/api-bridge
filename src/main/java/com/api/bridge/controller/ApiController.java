@@ -26,6 +26,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@Tag(name="38bfea5c-310f-4068-86e9-5182bd855994",description = "api元数据接口")
 public class ApiController {
 
     @Autowired
