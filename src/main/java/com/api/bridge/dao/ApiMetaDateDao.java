@@ -3,6 +3,7 @@ package com.api.bridge.dao;
 import com.api.bridge.dao.domain.ApiMetaDate;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Collection;
 import java.util.List;
 
 @Mapper
@@ -24,4 +25,6 @@ public interface ApiMetaDateDao {
     Long selectProjectIdByApiId(Long id);
 
     List<ApiMetaDate> selectPathInfoByTagId(String tagId);
+
+    List<ApiMetaDate> selectBasicInfoByTagIds(Collection<String> tagIds);
 }

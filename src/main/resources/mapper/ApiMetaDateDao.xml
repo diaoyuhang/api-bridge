@@ -44,6 +44,15 @@
         where tag_id = #{tagId}
 
     </select>
+    <select id="selectBasicInfoByTagIds" resultType="com.api.bridge.dao.domain.ApiMetaDate">
+        select id,tag_id,path,method,summary from
+          api_meta_date
+      where tag_id in
+      <foreach collection="tagIds" separator="," item="item" open="(" close=")">
+        #{item}
+      </foreach>
+        order by id
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from api_meta_date

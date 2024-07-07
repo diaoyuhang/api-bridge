@@ -4,6 +4,7 @@ import com.api.bridge.constant.Status;
 import com.api.bridge.dao.domain.ApiMetaDate;
 import com.api.bridge.dto.ResultDto;
 import com.api.bridge.dto.api.ApiMetaDateReqDto;
+import com.api.bridge.dto.api.OpenApiBasicInfoResDto;
 import com.api.bridge.dto.api.PathInfoResDto;
 import com.api.bridge.dto.permission.PermissionPathType;
 import com.api.bridge.dto.validGroup.Delete;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @RestController
@@ -59,9 +61,17 @@ public class ApiController {
         return ResultDto.createSuccess(res);
     }
 
-    @GetMapping("/apiMetaDateInfo/{apiId}")
-    public String apiMetaDateInfo(@PathVariable(value = "apiId") String apiId){
+    @GetMapping("/apiMetaDateInfo")
+    public ResultDto<String> apiMetaDateInfo(@NotBlank(message = "apiId is empty")  String apiId){
         ApiMetaDate apiMetaDate = apiMetaDateService.getMetaDateInfo(Long.parseLong(SecretUtil.decrypt(apiId)));
-        return apiMetaDate.getMetaDate();
+        return ResultDto.createSuccess(apiMetaDate.getMetaDate());
+    }
+
+    @GetMapping("/getBasicApiInfoList")
+    public ResultDto<OpenApiBasicInfoResDto> getBasicApiInfoList(@NotBlank(message = "projectId is empty") String projectId){
+        Long pId = Long.parseLong(SecretUtil.decrypt(projectId));
+        authorizationService.validate(pId, PermissionPathType.PROJECT_VIEW);
+        OpenApiBasicInfoResDto res = apiMetaDateService.getBasicApiInfoList(pId);
+        return ResultDto.createSuccess(res);
     }
 }

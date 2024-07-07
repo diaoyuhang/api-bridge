@@ -38,7 +38,7 @@ public class ProjectController {
         return ResultDto.createSuccess(projectResDto);
     }
 
-    @GetMapping("/projectList")
+        @GetMapping("/projectList")
     public ResultDto<List<ProjectResDto>> projectList() {
         List<Project> projects = projectService.getProjectList();
         ArrayList<ProjectResDto> res = new ArrayList<>();

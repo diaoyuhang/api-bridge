@@ -7,14 +7,14 @@ public class ResultDto<T> {
     private String msg;
     private Integer code;
 
-    private T date;
+    private T data;
 
     private ResultDto(){}
 
     public static <T> ResultDto<T> createSuccess(T date){
         ResultDto<T> resultDto = new ResultDto<>();
         resultDto.code = Status.ok.getStatueCode();
-        resultDto.date=date;
+        resultDto.data =date;
         return resultDto;
     }
 
@@ -48,11 +48,11 @@ public class ResultDto<T> {
         this.code = code;
     }
 
-    public T getDate() {
-        return date;
+    public T getData() {
+        return data;
     }
 
-    public void setDate(T date) {
-        this.date = date;
+    public void setData(T data) {
+        this.data = data;
     }
 }

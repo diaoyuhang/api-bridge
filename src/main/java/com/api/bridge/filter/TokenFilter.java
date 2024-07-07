@@ -2,6 +2,7 @@ package com.api.bridge.filter;
 
 import com.api.bridge.constant.BaseConstant;
 import com.api.bridge.utils.ReqThreadInfoUtil;
+import com.api.bridge.utils.SecretUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.Filter;
@@ -47,7 +48,11 @@ public class TokenFilter implements Filter {
             String token = request.getHeader("token");
             if (!isAuthWhiteList(requestURI)) {
                 if (StringUtils.isBlank(token)) {
-                    response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
+                    try {
+                        String decrypt = SecretUtil.decrypt(token);
+                    } catch (Exception e) {
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
+                    }
                     return;
                 }
             }

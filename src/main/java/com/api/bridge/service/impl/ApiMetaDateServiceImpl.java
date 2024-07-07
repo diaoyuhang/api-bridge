@@ -7,8 +7,11 @@ import com.api.bridge.dao.TagGroupDao;
 import com.api.bridge.dao.domain.ApiMetaDate;
 import com.api.bridge.dao.domain.ApiMetaDateHistory;
 import com.api.bridge.dao.domain.TagGroup;
+import com.api.bridge.dto.api.ApiBasicInfoGroup;
 import com.api.bridge.dto.api.ApiMetaDateReqDto;
+import com.api.bridge.dto.api.OpenApiBasicInfoResDto;
 import com.api.bridge.dto.api.PathInfoResDto;
+import com.api.bridge.dto.api.Tag;
 import com.api.bridge.service.ApiMetaDateService;
 import com.api.bridge.utils.SecretUtil;
 import com.api.bridge.utils.UserHelperUtil;
@@ -17,7 +20,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -92,5 +98,40 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
         ApiMetaDate apiMetaDate = apiMetaDateDao.selectByPrimaryKey(apiId);
         Assert.notNull(apiMetaDate,"未查询到api元数据");
         return apiMetaDate;
+    }
+
+    @Override
+    public OpenApiBasicInfoResDto getBasicApiInfoList(Long projectId) {
+        OpenApiBasicInfoResDto openApiBasicInfoResDto = new OpenApiBasicInfoResDto();
+
+        List<TagGroup> tagGroupList = tagGroupDao.selectByProjectId(projectId);
+        List<Tag> tags = tagGroupList.stream().map(tag -> new Tag(tag.getName(), tag.getId())).collect(Collectors.toList());
+        openApiBasicInfoResDto.setTags(tags);
+
+        Map<String, Map<String,ApiBasicInfoGroup>> paths = new HashMap<>();
+        openApiBasicInfoResDto.setPaths(paths);
+
+        Map<String, String> tagIdMapName = new HashMap<>();
+        for (TagGroup tagGroup : tagGroupList) {
+            tagIdMapName.put(tagGroup.getId(),tagGroup.getName());
+        }
+
+        List<ApiMetaDate> apiMetaDateList = apiMetaDateDao.selectBasicInfoByTagIds(tagIdMapName.keySet());
+        for (ApiMetaDate apiMetaDate : apiMetaDateList) {
+            Map<String,ApiBasicInfoGroup> m = new HashMap<>();
+
+            ApiBasicInfoGroup apiBasicInfoGroup = new ApiBasicInfoGroup(Arrays.asList(tagIdMapName.get(apiMetaDate.getTagId())),
+                    SecretUtil.encrypt(apiMetaDate.getId().toString()),
+                    apiMetaDate.getSummary());
+
+            if (paths.containsKey(apiMetaDate.getPath())){
+                m = paths.get(apiMetaDate.getPath());
+            }else{
+                paths.put(apiMetaDate.getPath(),m);
+            }
+            m.put(apiMetaDate.getMethod(),apiBasicInfoGroup);
+        }
+
+        return openApiBasicInfoResDto;
     }
 }
