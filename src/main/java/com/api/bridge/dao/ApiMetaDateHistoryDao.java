@@ -3,6 +3,8 @@ package com.api.bridge.dao;
 import com.api.bridge.dao.domain.ApiMetaDateHistory;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface ApiMetaDateHistoryDao {
     int deleteByPrimaryKey(Long id);
@@ -16,4 +18,6 @@ public interface ApiMetaDateHistoryDao {
     int updateByPrimaryKeySelective(ApiMetaDateHistory record);
 
     int updateByPrimaryKey(ApiMetaDateHistory record);
+
+    List<ApiMetaDateHistory> selectByApiIdDescEditTime(Long apiId);
 }

@@ -25,7 +25,16 @@
     from api_meta_date_history
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+
+    <select id="selectByApiIdDescEditTime" resultType="com.api.bridge.dao.domain.ApiMetaDateHistory">
+        select id,api_id,operation_type,edit_time,editor
+            from
+             api_meta_date_history
+        where api_id = #{api_id,jdbcType=BIGINT}
+        order by edit_time desc
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from api_meta_date_history
     where id = #{id,jdbcType=BIGINT}
   </delete>

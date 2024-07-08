@@ -3,6 +3,7 @@ package com.api.bridge.controller;
 import com.api.bridge.constant.Status;
 import com.api.bridge.dao.domain.ApiMetaDate;
 import com.api.bridge.dto.ResultDto;
+import com.api.bridge.dto.api.ApiHistoryOperInfoResDTO;
 import com.api.bridge.dto.api.ApiMetaDateReqDto;
 import com.api.bridge.dto.api.OpenApiBasicInfoResDto;
 import com.api.bridge.dto.api.PathInfoResDto;
@@ -72,6 +73,13 @@ public class ApiController {
         Long pId = Long.parseLong(SecretUtil.decrypt(projectId));
         authorizationService.validate(pId, PermissionPathType.PROJECT_VIEW);
         OpenApiBasicInfoResDto res = apiMetaDateService.getBasicApiInfoList(pId);
+        return ResultDto.createSuccess(res);
+    }
+
+    @GetMapping("/getApiHistoryInfo")
+    public ResultDto<List<ApiHistoryOperInfoResDTO>> getApiHistoryInfo(@NotBlank(message = "apiId is empty") String apiId){
+        Long aId = Long.parseLong(SecretUtil.decrypt(apiId));
+        List<ApiHistoryOperInfoResDTO> res = apiMetaDateService.getApiHistoryInfo(aId);
         return ResultDto.createSuccess(res);
     }
 }

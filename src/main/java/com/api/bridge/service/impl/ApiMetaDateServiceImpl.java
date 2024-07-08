@@ -7,11 +7,7 @@ import com.api.bridge.dao.TagGroupDao;
 import com.api.bridge.dao.domain.ApiMetaDate;
 import com.api.bridge.dao.domain.ApiMetaDateHistory;
 import com.api.bridge.dao.domain.TagGroup;
-import com.api.bridge.dto.api.ApiBasicInfoGroup;
-import com.api.bridge.dto.api.ApiMetaDateReqDto;
-import com.api.bridge.dto.api.OpenApiBasicInfoResDto;
-import com.api.bridge.dto.api.PathInfoResDto;
-import com.api.bridge.dto.api.Tag;
+import com.api.bridge.dto.api.*;
 import com.api.bridge.service.ApiMetaDateService;
 import com.api.bridge.utils.SecretUtil;
 import com.api.bridge.utils.UserHelperUtil;
@@ -20,10 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -133,5 +126,15 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
         }
 
         return openApiBasicInfoResDto;
+    }
+
+    @Override
+    public List<ApiHistoryOperInfoResDTO> getApiHistoryInfo(Long apiId) {
+        List<ApiHistoryOperInfoResDTO> resDto = new ArrayList<>();
+        List<ApiMetaDateHistory> histories = apiMetaDateHistoryDao.selectByApiIdDescEditTime(apiId);
+        for (ApiMetaDateHistory history : histories) {
+            resDto.add(ApiHistoryOperInfoResDTO.create(history));
+        }
+        return resDto;
     }
 }

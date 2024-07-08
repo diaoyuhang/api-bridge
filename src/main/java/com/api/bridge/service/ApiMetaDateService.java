@@ -1,10 +1,7 @@
 package com.api.bridge.service;
 
 import com.api.bridge.dao.domain.ApiMetaDate;
-import com.api.bridge.dto.api.ApiBasicInfoGroup;
-import com.api.bridge.dto.api.ApiMetaDateReqDto;
-import com.api.bridge.dto.api.OpenApiBasicInfoResDto;
-import com.api.bridge.dto.api.PathInfoResDto;
+import com.api.bridge.dto.api.*;
 
 import java.util.List;
 
@@ -20,4 +17,6 @@ public interface ApiMetaDateService {
     ApiMetaDate getMetaDateInfo(Long apiId);
 
     OpenApiBasicInfoResDto getBasicApiInfoList(Long projectId);
+
+    List<ApiHistoryOperInfoResDTO> getApiHistoryInfo(Long apiId);
 }
