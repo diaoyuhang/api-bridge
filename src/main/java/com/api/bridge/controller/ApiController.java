@@ -82,4 +82,11 @@ public class ApiController {
         List<ApiHistoryOperInfoResDTO> res = apiMetaDateService.getApiHistoryInfo(aId);
         return ResultDto.createSuccess(res);
     }
+
+    @GetMapping("/historyApiMetaDateInfo")
+    public ResultDto<String> historyApiMetaDateInfo(@NotBlank(message = "historyId is empty") String historyId){
+        Long hId = Long.parseLong(SecretUtil.decrypt(historyId));
+        String res = apiMetaDateService.historyApiMetaDateInfo(hId);
+        return ResultDto.createSuccess(res);
+    }
 }

@@ -19,4 +19,6 @@ public interface ApiMetaDateService {
     OpenApiBasicInfoResDto getBasicApiInfoList(Long projectId);
 
     List<ApiHistoryOperInfoResDTO> getApiHistoryInfo(Long apiId);
+
+    String historyApiMetaDateInfo(Long hId);
 }

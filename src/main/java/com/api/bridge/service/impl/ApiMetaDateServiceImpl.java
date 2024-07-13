@@ -137,4 +137,9 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
         }
         return resDto;
     }
+
+    @Override
+    public String historyApiMetaDateInfo(Long hId) {
+        return apiMetaDateHistoryDao.selectApiMetaDate(hId);
+    }
 }

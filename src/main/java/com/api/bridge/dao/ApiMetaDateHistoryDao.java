@@ -20,4 +20,6 @@ public interface ApiMetaDateHistoryDao {
     int updateByPrimaryKey(ApiMetaDateHistory record);
 
     List<ApiMetaDateHistory> selectByApiIdDescEditTime(Long apiId);
+
+    String selectApiMetaDate(Long historyId);
 }
