@@ -26,5 +26,7 @@ public interface PermissionPathDao {
 
     List<Long> selectProjectIdByUserIdAndPathType(@Param("userId") Long userId,@Param("pathType") Integer pathType);
 
-    Long selectIdByProjectIdAndType(Long projectId, Long userId);
+    List<Long> selectIdByProjectIdAndType(@Param("projectId") Long projectId,@Param("permissionTypes") List<Integer> permissionTypes);
+
+    List<PermissionPath> selectByProjectId(Long projectId);
 }

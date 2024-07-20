@@ -17,4 +17,6 @@ public interface UserDao {
     int selectCountByEmail(String email);
 
     User selectByEmailAndPassword(User user);
+
+    Long selectUserIdByEmail(String email);
 }

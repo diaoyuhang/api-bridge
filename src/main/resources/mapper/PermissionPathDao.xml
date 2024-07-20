@@ -33,8 +33,21 @@
   </select>
 
   <select id="selectIdByProjectIdAndType" resultType="java.lang.Long">
-    select id from permission_path
-    where project_id #{projectId} and userId=#{userId}
+    select id
+    from permission_path
+    where project_id = #{projectId} and
+      path_type in
+    <foreach collection="permissionTypes" separator="," item="item" open="(" close=")">
+      #{item}
+    </foreach>
+  </select>
+
+  <select id="selectByProjectId" resultType="com.api.bridge.dao.domain.PermissionPath">
+    select
+    <include refid="Base_Column_List" />
+    from permission_path
+    where project_id = #{projectId}
+
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">

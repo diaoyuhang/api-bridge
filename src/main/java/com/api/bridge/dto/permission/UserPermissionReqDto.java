@@ -1,18 +1,24 @@
 package com.api.bridge.dto.permission;
 
 
+import com.api.bridge.dto.validGroup.Delete;
+import com.api.bridge.dto.validGroup.Insert;
+import com.api.bridge.dto.validGroup.Update;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.List;
 
 public class UserPermissionReqDto {
 
-    @NotBlank(message = "projectId is empty")
+    @NotBlank(message = "projectId is empty",groups = {Insert.class, Delete.class})
     private String projectId;
 
-    @NotNull(message = "permissionType is null")
-    private Integer permissionType;
-    @NotBlank(message = "userId is empty")
-    private String userId;
+    @Size(min = 1,message = "permissionTypes is empty",groups = {Insert.class})
+    private List<Integer> permissionTypes;
+    @NotBlank(message = "email is empty",groups = {Insert.class, Delete.class})
+    private String email;
 
     public String getProjectId() {
         return projectId;
@@ -22,19 +28,19 @@ public class UserPermissionReqDto {
         this.projectId = projectId;
     }
 
-    public Integer getPermissionType() {
-        return permissionType;
+    public List<Integer> getPermissionTypes() {
+        return permissionTypes;
     }
 
-    public void setPermissionType(Integer permissionType) {
-        this.permissionType = permissionType;
+    public void setPermissionTypes(List<Integer> permissionTypes) {
+        this.permissionTypes = permissionTypes;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

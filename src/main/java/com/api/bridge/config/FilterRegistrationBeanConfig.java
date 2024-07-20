@@ -17,7 +17,7 @@ public class FilterRegistrationBeanConfig {
         bean.addUrlPatterns("/*");
         bean.setOrder(2);
         bean.addInitParameter("excludedAccuratePaths","/user/register,/user/login");//需要排除的uri
-        bean.addInitParameter("excludedVaguePaths","/api/apiMetaDateInfo/.*");//需要排除的uri
+        bean.addInitParameter("excludedVaguePaths","/api/apiMetaDateInfo/.*,/test/.*");//需要排除的uri
         return bean;
     }
 
