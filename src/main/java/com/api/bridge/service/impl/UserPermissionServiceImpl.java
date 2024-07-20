@@ -9,6 +9,7 @@ import com.api.bridge.dto.permission.ProjectAutoInfoResDto;
 import com.api.bridge.dto.permission.UserPermissionInfoDto;
 import com.api.bridge.dto.permission.UserPermissionReqDto;
 import com.api.bridge.service.UserPermissionService;
+import com.api.bridge.utils.SecretUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,31 +37,43 @@ public class UserPermissionServiceImpl implements UserPermissionService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addPermission(UserPermissionReqDto userPermissionReqDto) {
-        Long projectId = Long.parseLong(userPermissionReqDto.getProjectId());
+        Long projectId = Long.parseLong(SecretUtil.decrypt(userPermissionReqDto.getProjectId()));
         Long userId = userDao.selectUserIdByEmail(userPermissionReqDto.getEmail());
         Assert.notNull(userId, userPermissionReqDto.getEmail() + "用户邮箱不存在");
 
-        List<Integer> permissionTypes = userPermissionReqDto.getPermissionTypes();
-        List<Long> permissionIds = permissionPathDao.selectIdByProjectIdAndType(projectId,permissionTypes);
-        Assert.isTrue(permissionIds.size() == permissionTypes.size(), "查询权限不全");
+        List<PermissionPath> permissionPaths = permissionPathDao.selectByProjectId(projectId);
+        Assert.isTrue(permissionPaths.size() > 0, "项目权限为空");
+        List<Long> needDeletePermissionIds = permissionPaths.stream().filter(pp -> !userPermissionReqDto.getPermissionTypes().contains(pp.getPathType()))
+                .map(PermissionPath::getId).collect(Collectors.toList());
+        if (!needDeletePermissionIds.isEmpty()) {
+            userPermissionDao.deleteByUseIdAndPermissionId(userId, needDeletePermissionIds);
+        }
 
-        List<Long> existPermissionIds = userPermissionDao.selectExistPermissionIdByUserIdAndPermissions(userId,permissionIds);
-        List<UserPermission> userPermissions = permissionIds.stream().filter(id -> !existPermissionIds.contains(id))
-                .map(id -> UserPermission.create(userId, id)).collect(Collectors.toList());
+        List<Long> needAddPermissionIds = permissionPaths.stream().filter(pp -> userPermissionReqDto.getPermissionTypes().contains(pp.getPathType()))
+                .map(PermissionPath::getId).collect(Collectors.toList());
+        if (!needAddPermissionIds.isEmpty()) {
+            List<Long> existPermissionIds = userPermissionDao.selectExistPermissionIdByUserIdAndPermissions(userId, needAddPermissionIds);
+            needAddPermissionIds.removeAll(existPermissionIds);
 
-        userPermissionDao.batchInsert(userPermissions);
+            if (!needAddPermissionIds.isEmpty()) {
+                List<UserPermission> userPermissions = needAddPermissionIds.stream()
+                        .map(id -> UserPermission.create(userId, id)).collect(Collectors.toList());
+                userPermissionDao.batchInsert(userPermissions);
+            }
+        }
+
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deletePermission(UserPermissionReqDto userPermissionReqDto) {
-        Long projectId = Long.parseLong(userPermissionReqDto.getProjectId());
+        Long projectId = Long.parseLong(SecretUtil.decrypt(userPermissionReqDto.getProjectId()));
         Long userId = userDao.selectUserIdByEmail(userPermissionReqDto.getEmail());
         Assert.notNull(userId, userPermissionReqDto.getEmail() + "用户邮箱不存在");
 
-        List<Long> permissionId = permissionPathDao.selectIdByProjectId(projectId);
-        Assert.isTrue(permissionId.size() > 0, "权限id为null");
-        userPermissionDao.deleteByUseIdAndPermissionId(userId, permissionId);
+        List<Long> permissionIds = permissionPathDao.selectIdByProjectId(projectId);
+        Assert.isTrue(permissionIds.size() > 0, "权限id为null");
+        userPermissionDao.deleteByUseIdAndPermissionId(userId, permissionIds);
     }
 
     @Override

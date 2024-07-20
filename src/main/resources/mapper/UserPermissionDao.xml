@@ -44,7 +44,7 @@
       from user_permission t1
       where t1.user_id =#{userId}
       and t1.permission_id in
-      <foreach collection="permissionTypes" separator="," item="item" open="(" close=")">
+      <foreach collection="permissionIds" separator="," item="item" open="(" close=")">
         #{item}
       </foreach>
     </select>
@@ -75,8 +75,8 @@
     </delete>
   <delete id="deleteByUseIdAndPermissionId">
         delete from user_permission
-        where userId=#{userId} and permission_id in
-      <foreach collection="list" separator="," item="item">
+        where user_id=#{userId} and permission_id in
+      <foreach collection="permissionId" separator="," item="item" open="(" close=")">
         #{item}
       </foreach>
 

@@ -3,7 +3,7 @@ package com.api.bridge.dto.permission;
 public class UserPermissionInfoDto {
 
     private String email;
-    private String permissionId;
+    private Long permissionId;
 
     public String getEmail() {
         return email;
@@ -13,11 +13,11 @@ public class UserPermissionInfoDto {
         this.email = email;
     }
 
-    public String getPermissionId() {
+    public Long getPermissionId() {
         return permissionId;
     }
 
-    public void setPermissionId(String permissionId) {
+    public void setPermissionId(Long permissionId) {
         this.permissionId = permissionId;
     }
 }
