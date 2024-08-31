@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.bridge.dao.ProjectRequestParamDao">
+  <resultMap id="BaseResultMap" type="com.api.bridge.dao.domain.ProjectRequestParam">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="project_id" jdbcType="BIGINT" property="projectId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="required" jdbcType="BOOLEAN" property="required" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="edit_time" jdbcType="TIMESTAMP" property="editTime" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="editor" jdbcType="VARCHAR" property="editor" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, project_id, `type`, `name`, required, create_time, edit_time, creator, editor
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from project_request_param
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from project_request_param
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.ProjectRequestParam" useGeneratedKeys="true">
+    insert into project_request_param (project_id, `type`, `name`, 
+      required, create_time, edit_time, 
+      creator, editor
+      )
+    values (#{projectId,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{required,jdbcType=BOOLEAN}, #{createTime,jdbcType=TIMESTAMP}, #{editTime,jdbcType=TIMESTAMP}, 
+      #{creator,jdbcType=VARCHAR}, #{editor,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.api.bridge.dao.domain.ProjectRequestParam" useGeneratedKeys="true">
+    insert into project_request_param
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="projectId != null">
+        project_id,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="required != null">
+        required,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="editTime != null">
+        edit_time,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="editor != null">
+        editor,
+      </if>
+
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="projectId != null">
+        #{projectId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="required != null">
+        #{required,jdbcType=BOOLEAN},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editTime != null">
+        #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="editor != null">
+        #{editor,jdbcType=VARCHAR},
+      </if>
+
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.api.bridge.dao.domain.ProjectRequestParam">
+    update project_request_param
+    <set>
+      <if test="projectId != null">
+        project_id = #{projectId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="required != null">
+        required = #{required,jdbcType=BOOLEAN},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editTime != null">
+        edit_time = #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="editor != null">
+        editor = #{editor,jdbcType=VARCHAR},
+      </if>
+
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.api.bridge.dao.domain.ProjectRequestParam">
+    update project_request_param
+    set project_id = #{projectId,jdbcType=BIGINT},
+      `type` = #{type,jdbcType=INTEGER},
+      `name` = #{name,jdbcType=VARCHAR},
+      required = #{required,jdbcType=BOOLEAN},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      edit_time = #{editTime,jdbcType=TIMESTAMP},
+      creator = #{creator,jdbcType=VARCHAR},
+      editor = #{editor,jdbcType=VARCHAR},
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
