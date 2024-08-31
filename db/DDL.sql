@@ -122,3 +122,22 @@ CREATE TABLE user_permission
     UNIQUE INDEX user_permission_userId_permissionId (user_id,permission_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 comment ='用户权限';
+
+create table project_request_param
+(
+    id          bigint auto_increment comment '主键'
+        primary key,
+    project_id  bigint      not null comment '项目id|project.id',
+    type        int         not null comment '参数类型|0-请求头Header参数，1-cookie参数',
+    name  varchar(50) not null comment '参数名',
+    required    tinyint(1)  not null default 0 comment '参数是否必填',
+    create_time datetime    not null comment '创建时间',
+    edit_time   datetime    not null comment '编辑时间',
+    creator     varchar(50) not null comment '创建人',
+    editor      varchar(50) not null comment '修改人',
+    rec_time    timestamp            default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '时间戳'
+)
+    comment '项目请求参数配置' charset = utf8mb4;
+
+create index project_request_param_project_id
+    on project_request_param (project_id);
