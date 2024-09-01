@@ -8,6 +8,7 @@ import com.api.bridge.utils.SecretUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class ProjectRequestParamReqDto {
 
@@ -17,13 +18,13 @@ public class ProjectRequestParamReqDto {
     @NotBlank(message = "project id is empty",groups = {Insert.class, Update.class,Delete.class})
     private String projectId;
 
-    @NotBlank(message = "type is empty",groups = {Insert.class, Update.class})
+    @NotNull(message = "type is null",groups = {Insert.class, Update.class})
     private Integer type;
 
     @NotBlank(message = "name is empty",groups = {Insert.class, Update.class})
     private String name;
 
-    @NotBlank(message = "required is empty",groups = {Insert.class, Update.class})
+    @NotNull(message = "required is null",groups = {Insert.class, Update.class})
     private Boolean required;
 
     public String getId() {

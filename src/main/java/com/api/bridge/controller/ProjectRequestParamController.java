@@ -32,7 +32,7 @@ public class ProjectRequestParamController {
     @Autowired
     private ProjectRequestParamService projectRequestParamService;
 
-    @GetMapping("/getParam")
+        @GetMapping("/getParam")
     public ResultDto<List<ProjectRequestParamResDto>> getParam(String projectId){
         String pId = SecretUtil.decrypt(projectId);
         List<ProjectRequestParamResDto>  res = projectRequestParamService.getParam(Long.valueOf(pId));

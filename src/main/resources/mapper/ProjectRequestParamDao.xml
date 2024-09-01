@@ -27,10 +27,13 @@
     <include refid="Base_Column_List" />
     from project_request_param
     where project_id = #{projectId,jdbcType=BIGINT}
-
+    order by create_time desc
   </select>
   <select id="selectByIdAndProjectId" resultType="com.api.bridge.dao.domain.ProjectRequestParam">
-
+    select
+    <include refid="Base_Column_List" />
+    from project_request_param
+    where id = #{id,jdbcType=BIGINT} and project_id = #{projectId,jdbcType=BIGINT}
 
   </select>
 
@@ -145,7 +148,7 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       edit_time = #{editTime,jdbcType=TIMESTAMP},
       creator = #{creator,jdbcType=VARCHAR},
-      editor = #{editor,jdbcType=VARCHAR},
+      editor = #{editor,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
