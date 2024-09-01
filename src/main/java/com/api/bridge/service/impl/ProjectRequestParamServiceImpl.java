@@ -1,7 +1,9 @@
 package com.api.bridge.service.impl;
 
 import com.api.bridge.dao.ProjectRequestParamDao;
+import com.api.bridge.dao.TagGroupDao;
 import com.api.bridge.dao.domain.ProjectRequestParam;
+import com.api.bridge.dao.domain.TagGroup;
 import com.api.bridge.dto.ProjectRequestParam.ProjectRequestParamReqDto;
 import com.api.bridge.dto.ProjectRequestParam.ProjectRequestParamResDto;
 import com.api.bridge.service.ProjectRequestParamService;
@@ -23,6 +25,8 @@ public class ProjectRequestParamServiceImpl implements ProjectRequestParamServic
 
     @Autowired
     private ProjectRequestParamDao projectRequestParamDao;
+    @Autowired
+    private TagGroupDao tagGroupDao;
 
     @Override
     public List<ProjectRequestParamResDto> getParam(Long projectId) {
@@ -63,5 +67,13 @@ public class ProjectRequestParamServiceImpl implements ProjectRequestParamServic
         Assert.notNull(projectRequestParam,"删除记录不存在该项目下");
 
         projectRequestParamDao.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public List<ProjectRequestParam> getParamByTagId(String tagId) {
+        TagGroup tagGroup = tagGroupDao.selectByPrimaryKey(tagId);
+        Assert.notNull(tagGroup,tagId+" 不存在");
+
+        return projectRequestParamDao.selectByProjectId(tagGroup.getProjectId());
     }
 }

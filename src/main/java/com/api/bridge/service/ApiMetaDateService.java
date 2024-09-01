@@ -1,7 +1,9 @@
 package com.api.bridge.service;
 
 import com.api.bridge.dao.domain.ApiMetaDate;
+import com.api.bridge.dao.domain.ApiMetaDateHistory;
 import com.api.bridge.dto.api.*;
+import io.swagger.v3.oas.models.OpenAPI;
 
 import java.util.List;
 
@@ -20,5 +22,7 @@ public interface ApiMetaDateService {
 
     List<ApiHistoryOperInfoResDTO> getApiHistoryInfo(Long apiId);
 
-    String historyApiMetaDateInfo(Long hId);
+    ApiMetaDateHistory historyApiMetaDateInfo(Long hId);
+
+    OpenAPI getOpenApi(String metaDate,String tagId);
 }

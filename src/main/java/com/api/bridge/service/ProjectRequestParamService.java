@@ -1,5 +1,6 @@
 package com.api.bridge.service;
 
+import com.api.bridge.dao.domain.ProjectRequestParam;
 import com.api.bridge.dto.ProjectRequestParam.ProjectRequestParamReqDto;
 import com.api.bridge.dto.ProjectRequestParam.ProjectRequestParamResDto;
 
@@ -13,4 +14,6 @@ public interface ProjectRequestParamService {
     void updateParam(ProjectRequestParamReqDto projectRequestParamReqDto);
 
     void deleteParam(ProjectRequestParamReqDto projectRequestParamReqDto);
+
+    List<ProjectRequestParam> getParamByTagId(String tagId);
 }

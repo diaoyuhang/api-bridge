@@ -1,12 +1,24 @@
 package com.api.bridge.dao.domain;
 
+import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.PathItem;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.parameters.Parameter;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * 项目请求参数配置
  * project_request_param
  */
 public class ProjectRequestParam {
+
+    public static final String PARAMETER_HEADER_TYPE="header";
+    public static final Integer HEADER_TYPE=0;
+    public static final String PARAMETER_COOKIE_TYPE="cookie";
+    public static final Integer COOKIE_TYPE=1;
+
     /**
      * 主键
      */
@@ -124,4 +136,46 @@ public class ProjectRequestParam {
         this.editor = editor;
     }
 
+    public void addParametersForPathItem(PathItem pathItem) {
+        Operation operation = null;
+
+        if (pathItem.getGet() != null) {
+            operation = pathItem.getGet();
+        } else if (pathItem.getPost() != null) {
+            operation = pathItem.getPost();
+        } else if (pathItem.getDelete() != null) {
+            operation = pathItem.getDelete();
+        } else if (pathItem.getPut() != null) {
+            operation = pathItem.getPut();
+        }
+
+        if (operation != null){
+            List<Parameter> parameters = operation.getParameters();
+            for (Parameter parameter : parameters) {
+                if (this.name.equals(parameter.getName())){
+                    return;
+                }
+            }
+            parameters.add(converParameter());
+        }
+    }
+
+    public Parameter converParameter(){
+        Parameter parameter = new Parameter();
+        parameter.setName(this.name);
+        parameter.setRequired(this.required);
+
+        if (this.getType().equals(HEADER_TYPE)){
+            parameter.setIn(PARAMETER_HEADER_TYPE);
+
+        }else if (this.getType().equals(COOKIE_TYPE)){
+            parameter.setIn(PARAMETER_COOKIE_TYPE);
+        }
+
+        Schema schema = new Schema();
+        schema.setType("string");
+        parameter.setSchema(schema);
+
+        return parameter;
+    }
 }

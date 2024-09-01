@@ -6,11 +6,17 @@ import com.api.bridge.dao.ProjectDao;
 import com.api.bridge.dao.TagGroupDao;
 import com.api.bridge.dao.domain.ApiMetaDate;
 import com.api.bridge.dao.domain.ApiMetaDateHistory;
+import com.api.bridge.dao.domain.ProjectRequestParam;
 import com.api.bridge.dao.domain.TagGroup;
 import com.api.bridge.dto.api.*;
 import com.api.bridge.service.ApiMetaDateService;
+import com.api.bridge.service.ProjectRequestParamService;
+import com.api.bridge.utils.OpenApiUtil;
 import com.api.bridge.utils.SecretUtil;
 import com.api.bridge.utils.UserHelperUtil;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.PathItem;
+import io.swagger.v3.oas.models.Paths;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +38,9 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
 
     @Autowired
     private ProjectDao projectDao;
+
+    @Autowired
+    private ProjectRequestParamService projectRequestParamService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -139,7 +148,27 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
     }
 
     @Override
-    public String historyApiMetaDateInfo(Long hId) {
-        return apiMetaDateHistoryDao.selectApiMetaDate(hId);
+    public ApiMetaDateHistory historyApiMetaDateInfo(Long hId) {
+        ApiMetaDateHistory apiMetaDateHistory = apiMetaDateHistoryDao.selectByPrimaryKey(hId);
+        return apiMetaDateHistory;
+    }
+
+    @Override
+    public OpenAPI getOpenApi(String metaDate,String tagId) {
+        List<ProjectRequestParam> params = projectRequestParamService.getParamByTagId(tagId);
+
+        //补充额外的参数
+        OpenAPI openAPI = OpenApiUtil.readJson(metaDate, OpenAPI.class);
+        Paths paths = openAPI.getPaths();
+        if (!params.isEmpty()) {
+            for (Map.Entry<String, PathItem> entry : paths.entrySet()) {
+                PathItem pathItem = entry.getValue();
+
+                for (ProjectRequestParam param : params) {
+                    param.addParametersForPathItem(pathItem);
+                }
+            }
+        }
+        return openAPI;
     }
 }

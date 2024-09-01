@@ -2,6 +2,7 @@ package com.api.bridge.controller;
 
 import com.api.bridge.constant.Status;
 import com.api.bridge.dao.domain.ApiMetaDate;
+import com.api.bridge.dao.domain.ApiMetaDateHistory;
 import com.api.bridge.dto.ResultDto;
 import com.api.bridge.dto.api.ApiHistoryOperInfoResDTO;
 import com.api.bridge.dto.api.ApiMetaDateReqDto;
@@ -12,8 +13,10 @@ import com.api.bridge.dto.validGroup.Delete;
 import com.api.bridge.dto.validGroup.Insert;
 import com.api.bridge.service.ApiMetaDateService;
 import com.api.bridge.service.AuthorizationService;
+import com.api.bridge.utils.OpenApiUtil;
 import com.api.bridge.utils.SecretUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.models.OpenAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
@@ -65,7 +68,8 @@ public class ApiController {
     @GetMapping("/apiMetaDateInfo")
     public ResultDto<String> apiMetaDateInfo(@NotBlank(message = "apiId is empty")  String apiId){
         ApiMetaDate apiMetaDate = apiMetaDateService.getMetaDateInfo(Long.parseLong(SecretUtil.decrypt(apiId)));
-        return ResultDto.createSuccess(apiMetaDate.getMetaDate());
+        OpenAPI openAPI = apiMetaDateService.getOpenApi(apiMetaDate.getMetaDate(),apiMetaDate.getTagId());
+        return ResultDto.createSuccess(OpenApiUtil.writeJson(openAPI));
     }
 
     @GetMapping("/getBasicApiInfoList")
@@ -86,7 +90,8 @@ public class ApiController {
     @GetMapping("/historyApiMetaDateInfo")
     public ResultDto<String> historyApiMetaDateInfo(@NotBlank(message = "historyId is empty") String historyId){
         Long hId = Long.parseLong(SecretUtil.decrypt(historyId));
-        String res = apiMetaDateService.historyApiMetaDateInfo(hId);
-        return ResultDto.createSuccess(res);
+        ApiMetaDateHistory apiMetaDateHistory = apiMetaDateService.historyApiMetaDateInfo(hId);
+        OpenAPI openAPI = apiMetaDateService.getOpenApi(apiMetaDateHistory.getMetaDate(),apiMetaDateHistory.getTagId());
+        return ResultDto.createSuccess(OpenApiUtil.writeJson(openAPI));
     }
 }
