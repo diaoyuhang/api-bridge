@@ -141,3 +141,22 @@ create table project_request_param
 
 create index project_request_param_project_id
     on project_request_param (project_id);
+
+create table user_env_config
+(
+    id          bigint auto_increment comment '主键'
+        primary key,
+    user_id     bigint       not null comment '用户id|user.id',
+    url         varchar(100) not null comment '请求url域名前缀',
+    description varchar(50)  not null default '' comment '描述',
+    create_time datetime     not null comment '创建时间',
+    edit_time   datetime     not null comment '编辑时间',
+    creator     varchar(50)  not null comment '创建人',
+    editor      varchar(50)  not null comment '修改人',
+    rec_time    timestamp             default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '时间戳'
+)
+    comment '用户环境配置' charset = utf8mb4;
+
+
+create index user_env_config_user_id
+    on user_env_config (user_id);
