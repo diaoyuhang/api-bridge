@@ -1,5 +1,7 @@
 package com.api.bridge.dao.domain;
 
+import io.swagger.v3.oas.models.servers.Server;
+
 import java.util.Date;
 
 /**
@@ -112,4 +114,10 @@ public class UserEnvConfig{
         this.editor = editor;
     }
 
+    public Server convertServer() {
+        Server server = new Server();
+        server.setUrl(this.url);
+        server.setDescription(this.description);
+        return server;
+    }
 }

@@ -1,13 +1,7 @@
 package com.api.bridge.service.impl;
 
-import com.api.bridge.dao.ApiMetaDateDao;
-import com.api.bridge.dao.ApiMetaDateHistoryDao;
-import com.api.bridge.dao.ProjectDao;
-import com.api.bridge.dao.TagGroupDao;
-import com.api.bridge.dao.domain.ApiMetaDate;
-import com.api.bridge.dao.domain.ApiMetaDateHistory;
-import com.api.bridge.dao.domain.ProjectRequestParam;
-import com.api.bridge.dao.domain.TagGroup;
+import com.api.bridge.dao.*;
+import com.api.bridge.dao.domain.*;
 import com.api.bridge.dto.api.*;
 import com.api.bridge.service.ApiMetaDateService;
 import com.api.bridge.service.ProjectRequestParamService;
@@ -17,6 +11,9 @@ import com.api.bridge.utils.UserHelperUtil;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.servers.Server;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +24,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class ApiMetaDateServiceImpl implements ApiMetaDateService {
-
+    private final static Logger logger = LoggerFactory.getLogger(UserEnvConfigServiceImpl.class);
     @Autowired
     private TagGroupDao tagGroupDao;
     @Autowired
@@ -41,6 +38,8 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
 
     @Autowired
     private ProjectRequestParamService projectRequestParamService;
+    @Autowired
+    private UserEnvConfigDao userEnvConfigDao;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -168,6 +167,16 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
                     param.addParametersForPathItem(pathItem);
                 }
             }
+        }
+
+        try {
+            User user = UserHelperUtil.getUser();
+            List<UserEnvConfig> userEnvConfigList = userEnvConfigDao.selectByUserId(user.getId());
+            List<Server> servers = openAPI.getServers();
+            servers.addAll(userEnvConfigList.stream().map(UserEnvConfig::convertServer).toList());
+
+        } catch (Exception e) {
+            logger.warn("没有用户信息,message:"+e.getMessage(),e);
         }
         return openAPI;
     }
