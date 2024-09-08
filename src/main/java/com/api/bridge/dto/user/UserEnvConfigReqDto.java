@@ -6,6 +6,7 @@ import com.api.bridge.dto.validGroup.Insert;
 import com.api.bridge.dto.validGroup.Update;
 import com.api.bridge.utils.SecretUtil;
 import com.api.bridge.utils.UserHelperUtil;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.NotBlank;
@@ -13,11 +14,14 @@ import javax.validation.constraints.NotBlank;
 public class UserEnvConfigReqDto {
 
     @NotBlank(message = "id is null",groups = {Update.class, Delete.class})
+    @Schema(description = "id")
     private String id;
 
     @NotBlank(message = "url is null",groups = {Insert.class, Update.class})
+    @Schema(description = "域名前缀")
     private String url;
 
+    @Schema(description = "描述")
     private String description;
 
     public String getId() {

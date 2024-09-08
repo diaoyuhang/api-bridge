@@ -25,7 +25,7 @@
     <include refid="Base_Column_List" />
     from user_env_config
     where user_id = #{userId,jdbcType=BIGINT}
-
+    order by create_time desc
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">

@@ -6,12 +6,14 @@ import com.api.bridge.dto.api.*;
 import com.api.bridge.service.ApiMetaDateService;
 import com.api.bridge.service.ProjectRequestParamService;
 import com.api.bridge.utils.OpenApiUtil;
+import com.api.bridge.utils.ReqThreadInfoUtil;
 import com.api.bridge.utils.SecretUtil;
 import com.api.bridge.utils.UserHelperUtil;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.servers.Server;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +80,7 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
     @Transactional(rollbackFor = Exception.class)
     public void deleteApiMetaDate(Long apiId) {
         ApiMetaDate apiMetaDate = apiMetaDateDao.selectByPrimaryKey(apiId);
-        Assert.notNull(apiMetaDate,"未查询到对应的api信息");
+        Assert.notNull(apiMetaDate, "未查询到对应的api信息");
         apiMetaDateDao.deleteByPrimaryKey(apiId);
     }
 
@@ -91,13 +93,13 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
     public List<PathInfoResDto> getPathInfo(String tagId) {
         List<ApiMetaDate> apiMetaDateList = apiMetaDateDao.selectPathInfoByTagId(tagId);
 
-        return apiMetaDateList.stream().map(a->PathInfoResDto.create(a)).collect(Collectors.toList());
+        return apiMetaDateList.stream().map(a -> PathInfoResDto.create(a)).collect(Collectors.toList());
     }
 
     @Override
     public ApiMetaDate getMetaDateInfo(Long apiId) {
         ApiMetaDate apiMetaDate = apiMetaDateDao.selectByPrimaryKey(apiId);
-        Assert.notNull(apiMetaDate,"未查询到api元数据");
+        Assert.notNull(apiMetaDate, "未查询到api元数据");
         return apiMetaDate;
     }
 
@@ -109,28 +111,28 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
         List<Tag> tags = tagGroupList.stream().map(tag -> new Tag(tag.getName(), tag.getId())).collect(Collectors.toList());
         openApiBasicInfoResDto.setTags(tags);
 
-        Map<String, Map<String,ApiBasicInfoGroup>> paths = new HashMap<>();
+        Map<String, Map<String, ApiBasicInfoGroup>> paths = new HashMap<>();
         openApiBasicInfoResDto.setPaths(paths);
 
         Map<String, String> tagIdMapName = new HashMap<>();
         for (TagGroup tagGroup : tagGroupList) {
-            tagIdMapName.put(tagGroup.getId(),tagGroup.getName());
+            tagIdMapName.put(tagGroup.getId(), tagGroup.getName());
         }
 
         List<ApiMetaDate> apiMetaDateList = apiMetaDateDao.selectBasicInfoByTagIds(tagIdMapName.keySet());
         for (ApiMetaDate apiMetaDate : apiMetaDateList) {
-            Map<String,ApiBasicInfoGroup> m = new HashMap<>();
+            Map<String, ApiBasicInfoGroup> m = new HashMap<>();
 
             ApiBasicInfoGroup apiBasicInfoGroup = new ApiBasicInfoGroup(Arrays.asList(tagIdMapName.get(apiMetaDate.getTagId())),
                     SecretUtil.encrypt(apiMetaDate.getId().toString()),
                     apiMetaDate.getSummary());
 
-            if (paths.containsKey(apiMetaDate.getPath())){
+            if (paths.containsKey(apiMetaDate.getPath())) {
                 m = paths.get(apiMetaDate.getPath());
-            }else{
-                paths.put(apiMetaDate.getPath(),m);
+            } else {
+                paths.put(apiMetaDate.getPath(), m);
             }
-            m.put(apiMetaDate.getMethod(),apiBasicInfoGroup);
+            m.put(apiMetaDate.getMethod(), apiBasicInfoGroup);
         }
 
         return openApiBasicInfoResDto;
@@ -153,7 +155,7 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
     }
 
     @Override
-    public OpenAPI getOpenApi(String metaDate,String tagId) {
+    public OpenAPI getOpenApi(String metaDate, String tagId) {
         List<ProjectRequestParam> params = projectRequestParamService.getParamByTagId(tagId);
 
         //补充额外的参数
@@ -169,15 +171,13 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
             }
         }
 
-        try {
+        if (!StringUtils.isEmpty(ReqThreadInfoUtil.getToken())) {
             User user = UserHelperUtil.getUser();
             List<UserEnvConfig> userEnvConfigList = userEnvConfigDao.selectByUserId(user.getId());
             List<Server> servers = openAPI.getServers();
             servers.addAll(userEnvConfigList.stream().map(UserEnvConfig::convertServer).toList());
-
-        } catch (Exception e) {
-            logger.warn("没有用户信息,message:"+e.getMessage(),e);
         }
+
         return openAPI;
     }
 }
