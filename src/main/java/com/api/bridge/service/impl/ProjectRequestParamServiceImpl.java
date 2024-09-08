@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public class ProjectRequestParamServiceImpl implements ProjectRequestParamServic
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void addParam(ProjectRequestParamReqDto projectRequestParamReqDto) {
         ProjectRequestParam projectRequestParam = projectRequestParamReqDto.convertProjectRequestParam();
 
@@ -46,6 +48,7 @@ public class ProjectRequestParamServiceImpl implements ProjectRequestParamServic
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateParam(ProjectRequestParamReqDto projectRequestParamReqDto) {
         ProjectRequestParam projectRequestParam = projectRequestParamReqDto.convertProjectRequestParam();
         ProjectRequestParam oldPrp = projectRequestParamDao.selectByPrimaryKey(projectRequestParam.getId());
@@ -60,6 +63,7 @@ public class ProjectRequestParamServiceImpl implements ProjectRequestParamServic
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteParam(ProjectRequestParamReqDto projectRequestParamReqDto) {
         Long id = Long.valueOf(SecretUtil.decrypt(projectRequestParamReqDto.getId()));
         Long projectId = Long.valueOf(SecretUtil.decrypt(projectRequestParamReqDto.getProjectId()));
