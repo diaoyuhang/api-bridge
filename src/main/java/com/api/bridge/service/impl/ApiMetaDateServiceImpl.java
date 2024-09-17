@@ -43,6 +43,7 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
     @Autowired
     private UserEnvConfigDao userEnvConfigDao;
 
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addApiMetaDate(ApiMetaDateReqDto apiMetaDateReqDto) {
@@ -59,7 +60,7 @@ public class ApiMetaDateServiceImpl implements ApiMetaDateService {
             tagGroupDao.updateByPrimaryKey(oldTagGroup);
         }
 
-        List<ApiMetaDate> apiMetaDateList = apiMetaDateReqDto.createApiMetaDateList();
+        List<ApiMetaDate> apiMetaDateList = apiMetaDateReqDto.createApiMetaDateList(projectDao);
         for (ApiMetaDate apiMetaDate : apiMetaDateList) {
             ApiMetaDate oldApiMetaDate = apiMetaDateDao.selectByTagIdAndPathAndMethod(apiMetaDate);
             if (oldApiMetaDate == null) {

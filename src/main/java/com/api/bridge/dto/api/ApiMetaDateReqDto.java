@@ -1,9 +1,12 @@
 package com.api.bridge.dto.api;
 
+import com.api.bridge.dao.ProjectDao;
 import com.api.bridge.dao.domain.ApiMetaDate;
+import com.api.bridge.dao.domain.Project;
 import com.api.bridge.dao.domain.TagGroup;
 import com.api.bridge.dto.validGroup.Delete;
 import com.api.bridge.dto.validGroup.Insert;
+import com.api.bridge.service.TagGroupService;
 import com.api.bridge.utils.OpenApiUtil;
 import com.api.bridge.utils.SecretUtil;
 import com.api.bridge.utils.UserHelperUtil;
@@ -88,17 +91,20 @@ public class ApiMetaDateReqDto {
         }
     }
 
-    public List<ApiMetaDate> createApiMetaDateList() {
+    public List<ApiMetaDate> createApiMetaDateList(ProjectDao projectDao) {
         ArrayList<ApiMetaDate> res = new ArrayList<>();
         if (!CollectionUtils.isEmpty(this.apiMeteDateList)) {
+            Project project = projectDao.selectByPrimaryKey(Long.parseLong(SecretUtil.decrypt(this.projectId)));
+
             for (String api : this.apiMeteDateList) {
                 ApiMetaDate apiMetaDate = new ApiMetaDate();
-                apiMetaDate.setMetaDate(api);
 
                 OpenAPI openAPI = OpenApiUtil.readJson(api, OpenAPI.class);
                 Assert.isTrue(!CollectionUtils.isEmpty(openAPI.getTags()), "tag 信息为空");
                 Assert.isTrue(StringUtils.isNotEmpty(openAPI.getTags().get(0).getDescription()), "tag description为空");
 
+
+                openAPI.getInfo().setTitle(project.getName());
                 Paths paths = openAPI.getPaths();
                 Assert.isTrue(!CollectionUtils.isEmpty(paths), "path信息为空");
                 Assert.isTrue(paths.entrySet().size() == 1, "paths长度大于1");
@@ -124,6 +130,7 @@ public class ApiMetaDateReqDto {
                 UserHelperUtil.fillCreateInfo(apiMetaDate);
                 UserHelperUtil.fillEditInfo(apiMetaDate);
 
+                apiMetaDate.setMetaDate(OpenApiUtil.writeJson(openAPI));
                 apiMetaDate.setTagId(tagId);
                 res.add(apiMetaDate);
             }
