@@ -15,6 +15,7 @@ import com.api.bridge.service.ApiMetaDateService;
 import com.api.bridge.service.AuthorizationService;
 import com.api.bridge.utils.OpenApiUtil;
 import com.api.bridge.utils.SecretUtil;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ public class ApiController {
     private AuthorizationService authorizationService;
 
     @PostMapping("/acceptApiMetaDate")
+    @Operation(summary = "上传api元数据")
     public ResultDto<String> acceptApiMetaDate(@RequestBody @Validated({Insert.class}) ApiMetaDateReqDto apiMetaDateReqDto) {
         authorizationService.validate(Long.parseLong(SecretUtil.decrypt(apiMetaDateReqDto.getProjectId())), PermissionPathType.API_UPLOAD);
         apiMetaDateService.addApiMetaDate(apiMetaDateReqDto);
@@ -48,6 +50,7 @@ public class ApiController {
     }
 
     @PostMapping("/deleteApiMetaDate")
+    @Operation(summary = "删除api元数据")
     public ResultDto<String> deleteApiMetaDate(@RequestBody @Validated({Delete.class}) ApiMetaDateReqDto apiMetaDateReqDto){
         Long apiId = Long.parseLong(SecretUtil.decrypt(apiMetaDateReqDto.getApiId()));
         Long projectId = apiMetaDateService.getProjectIdByApiId(apiId);
@@ -59,6 +62,7 @@ public class ApiController {
     }
 
     @GetMapping("/pathInfo/{tagId}")
+    @Operation(summary = "指定tagId下的api基础信息")
     public ResultDto<List<PathInfoResDto>> pathInfo(@PathVariable(value = "tagId") String tagId){
         authorizationService.validateByTagId(tagId, PermissionPathType.PROJECT_VIEW);
         List<PathInfoResDto> res = apiMetaDateService.getPathInfo(tagId);
@@ -66,6 +70,7 @@ public class ApiController {
     }
 
     @GetMapping("/apiMetaDateInfo")
+    @Operation(summary = "获取api元数据信息")
     public ResultDto<String> apiMetaDateInfo(@NotBlank(message = "apiId is empty")  String apiId){
         ApiMetaDate apiMetaDate = apiMetaDateService.getMetaDateInfo(Long.parseLong(SecretUtil.decrypt(apiId)));
         OpenAPI openAPI = apiMetaDateService.getOpenApi(apiMetaDate.getMetaDate(),apiMetaDate.getTagId());
@@ -73,6 +78,7 @@ public class ApiController {
     }
 
     @GetMapping("/getBasicApiInfoList")
+    @Operation(summary = "指定项目下的api基础信息")
     public ResultDto<OpenApiBasicInfoResDto> getBasicApiInfoList(@NotBlank(message = "projectId is empty") String projectId){
         Long pId = Long.parseLong(SecretUtil.decrypt(projectId));
         authorizationService.validate(pId, PermissionPathType.PROJECT_VIEW);
@@ -81,6 +87,7 @@ public class ApiController {
     }
 
     @GetMapping("/getApiHistoryInfo")
+    @Operation(summary = "获取api历史信息")
     public ResultDto<List<ApiHistoryOperInfoResDTO>> getApiHistoryInfo(@NotBlank(message = "apiId is empty") String apiId){
         Long aId = Long.parseLong(SecretUtil.decrypt(apiId));
         List<ApiHistoryOperInfoResDTO> res = apiMetaDateService.getApiHistoryInfo(aId);
@@ -88,6 +95,7 @@ public class ApiController {
     }
 
     @GetMapping("/historyApiMetaDateInfo")
+    @Operation(summary = "api历史元数据信息")
     public ResultDto<String> historyApiMetaDateInfo(@NotBlank(message = "historyId is empty") String historyId){
         Long hId = Long.parseLong(SecretUtil.decrypt(historyId));
         ApiMetaDateHistory apiMetaDateHistory = apiMetaDateService.historyApiMetaDateInfo(hId);
